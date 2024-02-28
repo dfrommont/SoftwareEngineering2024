@@ -8,6 +8,13 @@ using System.Linq;
 using System;
 using Random = System.Random;
 
+public enum TurnPhase
+{
+    Draft,
+    Attack,
+    Fortify
+}
+
 public class GameManagerScript : MonoBehaviour
 {
     private Dictionary<int, Country> countries;
@@ -20,7 +27,7 @@ public class GameManagerScript : MonoBehaviour
     private List<string> playerNames = new()
         { "Harold", "Horace", "Henry", "Hermine", "Hetty", "Harriet" };
 
-    
+    private TurnPhase currentPhase;
     
     void Start()
     {
@@ -67,8 +74,9 @@ public class GameManagerScript : MonoBehaviour
             player.setUnallocatedArmies(armiesToAllocate);
         }
         
+        //prepare for first turn
         currentPlayer = playerList[0];
-        
+        currentPhase = TurnPhase.Draft;
     }
 
     int getAvailableToDraft(){
