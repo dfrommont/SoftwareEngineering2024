@@ -1,24 +1,33 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TurnPhase
+{
+    Draft,
+    Attack,
+    Fortify
+}
 public class TurnPhaseStateMachine
 {
-    private State currentState;
+    private TurnPhase currentPhase;
+    public event Action phaseChanged;
 
-    private DraftState draftState = new DraftState();
-    private AttackState attackState = new AttackState();
-    private FortifyState fortifyState = new FortifyState();
-
-
-    public void changeState(State newState)
+    private void changePhase(TurnPhase newPhase)
     {
-        if (currentState != null)
+        
+        if (currentPhase != null)
         {
-            currentState.onExit();
+            //any code to run on setting initial phase
+            
         }
 
-        currentState = newState;
-        currentState.onEnter();
+        currentPhase = newPhase;
+    }
+
+    public TurnPhase getTurnPhase()
+    {
+        return currentPhase;
     }
 }

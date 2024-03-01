@@ -8,12 +8,7 @@ using System.Linq;
 using System;
 using Random = System.Random;
 
-public enum TurnPhase
-{
-    Draft,
-    Attack,
-    Fortify
-}
+
 
 public class GameManagerScript : MonoBehaviour
 {
@@ -27,7 +22,7 @@ public class GameManagerScript : MonoBehaviour
     private List<string> playerNames = new()
         { "Harold", "Horace", "Henry", "Hermine", "Hetty", "Harriet" };
 
-    private TurnPhase currentPhase;
+    private TurnPhaseStateMachine turnPhaseStateMachine = new TurnPhaseStateMachine();
     
     void Start()
     {
@@ -76,7 +71,8 @@ public class GameManagerScript : MonoBehaviour
         
         //prepare for first turn
         currentPlayer = playerList[0];
-        currentPhase = TurnPhase.Draft;
+        //tell turn phase state machine to begin at draft
+        
     }
 
     int getAvailableToDraft(){
@@ -84,6 +80,10 @@ public class GameManagerScript : MonoBehaviour
     }
 
     bool fortify(string player, Country origin, Country destination, int count){
+        if (turnPhaseStateMachine.getTurnPhase() != TurnPhase.Fortify)
+        {
+            throw new Exception("not in fortify phase");
+        }
         
         // check both countries are owned by the same player
         if(origin.getPlayer() != player){
