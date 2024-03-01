@@ -80,10 +80,10 @@ public class GameManagerScript : MonoBehaviour
     }
 
     bool fortify(string player, Country origin, Country destination, int count){
-        if (turnPhaseStateMachine.getTurnPhase() != TurnPhase.Fortify)
-        {
-            throw new Exception("not in fortify phase");
-        }
+        // if (turnPhaseStateMachine.getTurnPhase() != TurnPhase.Fortify)
+        // {
+        //     throw new Exception("not in fortify phase");
+        // }
         
         // check both countries are owned by the same player
         if(origin.getPlayer() != player){
