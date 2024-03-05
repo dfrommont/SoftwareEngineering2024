@@ -17,15 +17,19 @@ public class GameManagerScript : MonoBehaviour
     private int availableToDraft = 0;
     private int numberOfPlayers = 3;
     private Player currentPlayer;
-    private List<Player> playerList = new();
+    private Queue<Player> playerList = new();
+    private TestSubscriber _testSubscriber = new TestSubscriber();
 
     private List<string> playerNames = new()
         { "Harold", "Horace", "Henry", "Hermine", "Hetty", "Harriet" };
 
-    private TurnPhaseStateMachine turnPhaseStateMachine = new TurnPhaseStateMachine();
+    private TurnPhaseStateMachine turnPhaseStateMachine = new();
+
     
+
     void Start()
     {
+        turnPhaseStateMachine.PhaseChanged += _testSubscriber.stateHasChanged;
         string text = File.ReadAllText(@"./countries.json");
         JObject data = JObject.Parse(text);
         string countryTokens = data["countries"].ToString();
@@ -34,16 +38,7 @@ public class GameManagerScript : MonoBehaviour
         string continentTokens = data["continents"].ToString();
         continents = JsonConvert.DeserializeObject<Dictionary<int, Continent>>(continentTokens);
         Debug.Log(continents.Count);
-        //generate player names for number of players
-        Random rnd = new Random();
-        playerNames = playerNames.OrderBy(x => rnd.Next()).Take(numberOfPlayers).ToList();
-        //populate playerList
-        for (int i = 0; i < numberOfPlayers; i++)
-        {
-            //pick random player name from list
-            string playerName = playerNames[i];
-            playerList.Add(new Player(playerName));
-        }
+        generatePlayers();
         //determine number of armies to allocate to players
         int armiesToAllocate;
         switch (numberOfPlayers)
@@ -64,15 +59,11 @@ public class GameManagerScript : MonoBehaviour
                 throw new Exception("must have at least 3 players! number of players: "+ numberOfPlayers);
         }
         //set unallocated armies for all players
-        foreach (var player in playerList)
-        {
-            player.setUnallocatedArmies(armiesToAllocate);
-        }
+
         
         //prepare for first turn
-        currentPlayer = playerList[0];
-        //tell turn phase state machine to begin at draft
-        
+        nextPlayerTurn();
+
     }
 
     int getAvailableToDraft(){
@@ -80,6 +71,7 @@ public class GameManagerScript : MonoBehaviour
     }
 
     bool fortify(string player, Country origin, Country destination, int count){
+        //ensure statemachine in fortify phase
         // if (turnPhaseStateMachine.getTurnPhase() != TurnPhase.Fortify)
         // {
         //     throw new Exception("not in fortify phase");
@@ -101,5 +93,23 @@ public class GameManagerScript : MonoBehaviour
         origin.removeArmies(count);
         destination.addArmies(count);
         return true;
+    }
+    void generatePlayers()
+    {
+        //generate player names for number of players
+        Random rnd = new Random();
+        playerNames = playerNames.OrderBy(x => rnd.Next()).Take(numberOfPlayers).ToList();
+        //populate playerList
+        for (int i = 0; i < numberOfPlayers; i++)
+        {
+            string playerName = playerNames[i];
+            playerList.Enqueue(new Player(playerName));
+        }
+    }
+
+    private void nextPlayerTurn()
+    {
+        currentPlayer = playerList.Dequeue();
+        playerList.Enqueue(currentPlayer);
     }
 }

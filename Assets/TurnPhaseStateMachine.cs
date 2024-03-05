@@ -12,22 +12,47 @@ public enum TurnPhase
 public class TurnPhaseStateMachine
 {
     private TurnPhase currentPhase;
-    public event Action phaseChanged;
+
+    public TurnPhaseStateMachine()
+    {
+        currentPhase = TurnPhase.Draft;
+    }
+
+    public event Action PhaseChanged;
 
     private void changePhase(TurnPhase newPhase)
     {
-        
-        if (currentPhase != null)
-        {
-            //any code to run on setting initial phase
-            
-        }
-
         currentPhase = newPhase;
+        PhaseChanged?.Invoke();
     }
 
     public TurnPhase getTurnPhase()
     {
         return currentPhase;
+    }
+
+    public void changeDraftToAttack()
+    {
+        if (currentPhase!=TurnPhase.Draft)
+        {
+            throw new Exception("not in draft phase");
+        }
+        changePhase(TurnPhase.Attack);
+    }
+    public void changeAttackToFortify()
+    {
+        if (currentPhase!=TurnPhase.Attack)
+        {
+            throw new Exception("not in attack phase");
+        }
+        changePhase(TurnPhase.Fortify);
+    }
+    public void changeFortifyToDraft()
+    {
+        if (currentPhase!=TurnPhase.Fortify)
+        {
+            throw new Exception("not in fortify phase");
+        }
+        changePhase(TurnPhase.Draft);
     }
 }
