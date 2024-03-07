@@ -24,7 +24,7 @@ public class GameManagerScript : MonoBehaviour
     private List<string> playerNames = new()
         { "Harold", "Horace", "Henry", "Hermine", "Hetty", "Harriet" };
 
-    private TurnPhaseStateMachine turnPhaseStateMachine = new();
+    private TurnPhaseManager turnPhaseStateMachine = new();
 
     
 
@@ -52,7 +52,7 @@ public class GameManagerScript : MonoBehaviour
                 throw new Exception("must have at least 3 players! number of players: "+ numberOfPlayers);
         }
         //set unallocated armies for all players
-
+        Debug.Log(armiesToAllocate);
         
         //prepare for first turn
         nextPlayerTurn();
@@ -65,7 +65,7 @@ public class GameManagerScript : MonoBehaviour
 
     public bool fortify(string player, Country origin, Country destination, int count){
 
-        // Check if fortify is a valid move in gamestate. Reliant on StateManager
+        // Check if fortify is a valid move in gamestate.
         if (turnPhaseStateMachine.getTurnPhase() != TurnPhase.Fortify)
         {
             throw new Exception("not in fortify phase");
