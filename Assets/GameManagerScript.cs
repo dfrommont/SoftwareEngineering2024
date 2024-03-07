@@ -14,6 +14,7 @@ public class GameManagerScript : MonoBehaviour
 {
     private Dictionary<int, Country> countries;
     private Dictionary<int, Continent> continents;
+    // Stores the number of armies that a player has left to draft in their draft phase
     private int availableToDraft = 0;
     private int numberOfPlayers = 3;
     private Player currentPlayer;
@@ -30,14 +31,6 @@ public class GameManagerScript : MonoBehaviour
     void Start()
     {
         turnPhaseStateMachine.PhaseChanged += _testSubscriber.stateHasChanged;
-        string text = File.ReadAllText(@"./countries.json");
-        JObject data = JObject.Parse(text);
-        string countryTokens = data["countries"].ToString();
-        countries = JsonConvert.DeserializeObject<Dictionary<int, Country>>(countryTokens);
-        Debug.Log(countries.Count);
-        string continentTokens = data["continents"].ToString();
-        continents = JsonConvert.DeserializeObject<Dictionary<int, Continent>>(continentTokens);
-        Debug.Log(continents.Count);
         generatePlayers();
         //determine number of armies to allocate to players
         int armiesToAllocate;
@@ -63,21 +56,22 @@ public class GameManagerScript : MonoBehaviour
         
         //prepare for first turn
         nextPlayerTurn();
-
+        initCountries();
     }
 
     int getAvailableToDraft(){
         return availableToDraft;
     }
 
-    bool fortify(string player, Country origin, Country destination, int count){
-        //ensure statemachine in fortify phase
-        // if (turnPhaseStateMachine.getTurnPhase() != TurnPhase.Fortify)
-        // {
-        //     throw new Exception("not in fortify phase");
-        // }
+    public bool fortify(string player, Country origin, Country destination, int count){
+
+        // Check if fortify is a valid move in gamestate. Reliant on StateManager
+        if (turnPhaseStateMachine.getTurnPhase() != TurnPhase.Fortify)
+        {
+            throw new Exception("not in fortify phase");
+        }
         
-        // check both countries are owned by the same player
+        // Check both countries are owned by the same player
         if(origin.getPlayer() != player){
             return false;
         }
@@ -85,11 +79,17 @@ public class GameManagerScript : MonoBehaviour
             return false;
         }
 
-        // check origin has count + 1 armies
+        // Check if destination country is a neigbour to the origin
+        if(origin.isNeighbour(destination)){
+            return false;
+        }
+
+        // Check origin has count + 1 armies
         if(origin.getArmiesCount() > count){
             return false;
         }
 
+        // Passed all checks, so continue with movement
         origin.removeArmies(count);
         destination.addArmies(count);
         return true;
@@ -111,5 +111,25 @@ public class GameManagerScript : MonoBehaviour
     {
         currentPlayer = playerList.Dequeue();
         playerList.Enqueue(currentPlayer);
+    }
+
+    void initCountries(){
+        string text = File.ReadAllText(@"./countries.json");
+        JObject data = JObject.Parse(text);
+        string countryTokens = data["countries"].ToString();
+        countries = JsonConvert.DeserializeObject<Dictionary<int, Country>>(countryTokens);
+        Debug.Log(countries.Count);
+
+        foreach (KeyValuePair<int, Country> pair in countries)
+        {
+            pair.Value.initNeighbours(countries);
+        }
+        string continentTokens = data["continents"].ToString();
+        continents = JsonConvert.DeserializeObject<Dictionary<int, Continent>>(continentTokens);
+        Debug.Log(continents.Count);
+        foreach (KeyValuePair<int, Continent> pair in continents)
+        {
+            pair.Value.initCountries(countries);
+        }
     }
 }
