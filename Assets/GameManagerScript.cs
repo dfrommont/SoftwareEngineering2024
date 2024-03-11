@@ -57,10 +57,22 @@ public class GameManagerScript : MonoBehaviour
 
     private void allocateArmiesToUnoccupiedCountries()
     {
+        //setup list of unnoccupied countries
+        List<Country> unnoccupiedCountriesList = countries.Values.ToList(); //convert dictionary to list
+        //randomise unoccupied countries
+        Random rnd = new Random();
+        unnoccupiedCountriesList = unnoccupiedCountriesList.OrderBy(x => rnd.Next()).ToList();
+        
+        Queue<Country> unnoccupiedCountries = new Queue<Country>(unnoccupiedCountriesList); //convert list to queue
         // allocate armies to unoccupied countries
         for (int i = 0; i < countries.Count; i++)
         {
             // await player country allocation choice - ?event listener?
+            // Country countryChoice = ???
+            //random country for now
+
+            Country countryChoice = unnoccupiedCountries.Dequeue();
+            countryChoice.setPlayer(currentPlayer);
             nextPlayerTurn();
         }
     }
