@@ -41,6 +41,11 @@ public class Country
         return player;
     }
 
+    public void setPlayer(Player newOwnerPlayer)
+    {
+        this.player = newOwnerPlayer;
+    }
+
     public int getArmiesCount() {
         return armiesCount;
     }
