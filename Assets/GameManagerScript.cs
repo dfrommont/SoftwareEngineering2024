@@ -57,6 +57,10 @@ public class GameManagerScript : MonoBehaviour
 
     private void allocateArmiesToUnoccupiedCountries()
     {
+        if (turnPhaseStateMachine.getTurnPhase() != TurnPhase.Deploy)
+        {
+            throw new Exception("not in initial setup phase!");
+        }
         //setup list of unnoccupied countries
         List<Country> unnoccupiedCountriesList = countries.Values.ToList(); //convert dictionary to list
         //randomise unoccupied countries
@@ -72,9 +76,15 @@ public class GameManagerScript : MonoBehaviour
             //random country for now
 
             Country countryChoice = unnoccupiedCountries.Dequeue();
-            countryChoice.setPlayer(currentPlayer);
+            deploy(countryChoice, 1);
             nextPlayerTurn();
         }
+    }
+
+    private void deploy(Country deployToCountry, int armiesToDeploy)
+    {
+        deployToCountry.setPlayer(currentPlayer);
+        deployToCountry.addArmies(armiesToDeploy);
     }
 
     private int calculateArmiesToAllocate()
