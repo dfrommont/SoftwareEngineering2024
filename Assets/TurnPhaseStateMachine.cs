@@ -7,7 +7,8 @@ public enum TurnPhase
 {
     Draft,
     Attack,
-    Fortify
+    Fortify,
+    Deploy
 }
 public class TurnPhaseStateMachine
 {
@@ -15,7 +16,7 @@ public class TurnPhaseStateMachine
 
     public TurnPhaseStateMachine()
     {
-        currentPhase = TurnPhase.Draft;
+        currentPhase = TurnPhase.Deploy;
     }
 
     public event Action PhaseChanged;
@@ -23,6 +24,22 @@ public class TurnPhaseStateMachine
     private void changePhase(TurnPhase newPhase)
     {
         currentPhase = newPhase;
+        if (currentPhase == TurnPhase.Deploy)
+        {
+            currentPhase = TurnPhase.Draft;
+        }
+        if (currentPhase == TurnPhase.Draft)
+        {
+            currentPhase = TurnPhase.Attack;
+        }
+        if (currentPhase == TurnPhase.Attack)
+        {
+            currentPhase = TurnPhase.Fortify;
+        }
+        if (currentPhase == TurnPhase.Fortify)
+        {
+            currentPhase = TurnPhase.Draft;
+        }
         PhaseChanged?.Invoke();
     }
 
