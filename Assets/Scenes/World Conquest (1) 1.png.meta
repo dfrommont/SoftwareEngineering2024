@@ -1,0 +1,814 @@
+fileFormatVersion: 2
+guid: 76eb0f544f071f148a0f1f5f74169d09
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8781591962504458556
+    second: World Conquest (1) 1_0
+  - first:
+      213: 3438236998311949699
+    second: World Conquest (1) 1_1
+  - first:
+      213: -4435798645822928612
+    second: World Conquest (1) 1_2
+  - first:
+      213: 5094322640251627908
+    second: World Conquest (1) 1_3
+  - first:
+      213: 1944900061142266697
+    second: World Conquest (1) 1_4
+  - first:
+      213: -2269323523064442129
+    second: World Conquest (1) 1_5
+  - first:
+      213: -5407451006434529843
+    second: World Conquest (1) 1_6
+  - first:
+      213: 2129334596040568541
+    second: World Conquest (1) 1_7
+  - first:
+      213: 436518109631140076
+    second: World Conquest (1) 1_8
+  - first:
+      213: 8089079457037924377
+    second: World Conquest (1) 1_9
+  - first:
+      213: 8276852862263109293
+    second: World Conquest (1) 1_10
+  - first:
+      213: -5289191061822946531
+    second: World Conquest (1) 1_11
+  - first:
+      213: 4155287892067159359
+    second: World Conquest (1) 1_12
+  - first:
+      213: 4679724043007040763
+    second: World Conquest (1) 1_13
+  - first:
+      213: -986707450508262280
+    second: World Conquest (1) 1_14
+  - first:
+      213: 5848865998466422915
+    second: World Conquest (1) 1_15
+  - first:
+      213: 4116698789436270095
+    second: World Conquest (1) 1_16
+  - first:
+      213: 3599288369656530396
+    second: World Conquest (1) 1_17
+  - first:
+      213: 8371666042736028318
+    second: World Conquest (1) 1_18
+  - first:
+      213: 964876852754796739
+    second: World Conquest (1) 1_19
+  - first:
+      213: -8130267716998472239
+    second: World Conquest (1) 1_20
+  - first:
+      213: -1104791611574944398
+    second: World Conquest (1) 1_21
+  - first:
+      213: 2225457887102568606
+    second: World Conquest (1) 1_22
+  - first:
+      213: -8726323272493279799
+    second: World Conquest (1) 1_23
+  - first:
+      213: -6570831549343229913
+    second: World Conquest (1) 1_24
+  - first:
+      213: 7914238294321311176
+    second: World Conquest (1) 1_25
+  - first:
+      213: -5629489506155346996
+    second: World Conquest (1) 1_26
+  - first:
+      213: 4640435334281832175
+    second: World Conquest (1) 1_27
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: World Conquest (1) 1_0
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 92
+        width: 446
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4ce0f7013a4812680800000000000000
+      internalID: -8781591962504458556
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_1
+      rect:
+        serializedVersion: 2
+        x: 34
+        y: 50
+        width: 43
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3853df9555217bf20800000000000000
+      internalID: 3438236998311949699
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_2
+      rect:
+        serializedVersion: 2
+        x: 76
+        y: 49
+        width: 16
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c19c09c22a0e072c0800000000000000
+      internalID: -4435798645822928612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_3
+      rect:
+        serializedVersion: 2
+        x: 91
+        y: 49
+        width: 17
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 489ad6f437ba2b640800000000000000
+      internalID: 5094322640251627908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_4
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 50
+        width: 19
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94335041d4cadfa10800000000000000
+      internalID: 1944900061142266697
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_5
+      rect:
+        serializedVersion: 2
+        x: 124
+        y: 50
+        width: 20
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe25e47774eb180e0800000000000000
+      internalID: -2269323523064442129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_6
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 50
+        width: 19
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dcd2425a5ffd4f4b0800000000000000
+      internalID: -5407451006434529843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_7
+      rect:
+        serializedVersion: 2
+        x: 170
+        y: 50
+        width: 16
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ddea2fc888aec8d10800000000000000
+      internalID: 2129334596040568541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_8
+      rect:
+        serializedVersion: 2
+        x: 185
+        y: 50
+        width: 17
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ce0d69e68e2de0600800000000000000
+      internalID: 436518109631140076
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_9
+      rect:
+        serializedVersion: 2
+        x: 214
+        y: 49
+        width: 17
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 918b7ac88ee224070800000000000000
+      internalID: 8089079457037924377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_10
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 71
+        width: 13
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: da62e5953d94dd270800000000000000
+      internalID: 8276852862263109293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_11
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 49
+        width: 16
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d134fdaa0c40996b0800000000000000
+      internalID: -5289191061822946531
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_12
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 49
+        width: 17
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f3d052a725c8aa930800000000000000
+      internalID: 4155287892067159359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_13
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 50
+        width: 33
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfc1a4e0938b1f040800000000000000
+      internalID: 4679724043007040763
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_14
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 48
+        width: 32
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87449333dc28e42f0800000000000000
+      internalID: -986707450508262280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_15
+      rect:
+        serializedVersion: 2
+        x: 341
+        y: 49
+        width: 19
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 388937113a85b2150800000000000000
+      internalID: 5848865998466422915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_16
+      rect:
+        serializedVersion: 2
+        x: 359
+        y: 49
+        width: 16
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f0621afdcb3712930800000000000000
+      internalID: 4116698789436270095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_17
+      rect:
+        serializedVersion: 2
+        x: 376
+        y: 50
+        width: 16
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cd5829dc3bd33f130800000000000000
+      internalID: 3599288369656530396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_18
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 73
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e9a2b7f29e12e2470800000000000000
+      internalID: 8371666042736028318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_19
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 60
+        width: 9
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3c0527ca26ee36d00800000000000000
+      internalID: 964876852754796739
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_20
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 49
+        width: 28
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1ddda7f569c7b2f80800000000000000
+      internalID: -8130267716998472239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_21
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 71
+        width: 9
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27d7e39f1edfaa0f0800000000000000
+      internalID: -1104791611574944398
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_22
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 50
+        width: 20
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e980757482a62ee10800000000000000
+      internalID: 2225457887102568606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_23
+      rect:
+        serializedVersion: 2
+        x: 453
+        y: 71
+        width: 9
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9c550dbb73fd5e680800000000000000
+      internalID: -8726323272493279799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_24
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 50
+        width: 12
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72897760587bfc4a0800000000000000
+      internalID: -6570831549343229913
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_25
+      rect:
+        serializedVersion: 2
+        x: 230
+        y: 49
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8cda0d81cc505dd60800000000000000
+      internalID: 7914238294321311176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_26
+      rect:
+        serializedVersion: 2
+        x: 391
+        y: 50
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cc342d6de1900e1b0800000000000000
+      internalID: -5629489506155346996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: World Conquest (1) 1_27
+      rect:
+        serializedVersion: 2
+        x: 26
+        y: 28
+        width: 449
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fe62a07b953266040800000000000000
+      internalID: 4640435334281832175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      World Conquest (1) 1_0: -8781591962504458556
+      World Conquest (1) 1_1: 3438236998311949699
+      World Conquest (1) 1_10: 8276852862263109293
+      World Conquest (1) 1_11: -5289191061822946531
+      World Conquest (1) 1_12: 4155287892067159359
+      World Conquest (1) 1_13: 4679724043007040763
+      World Conquest (1) 1_14: -986707450508262280
+      World Conquest (1) 1_15: 5848865998466422915
+      World Conquest (1) 1_16: 4116698789436270095
+      World Conquest (1) 1_17: 3599288369656530396
+      World Conquest (1) 1_18: 8371666042736028318
+      World Conquest (1) 1_19: 964876852754796739
+      World Conquest (1) 1_2: -4435798645822928612
+      World Conquest (1) 1_20: -8130267716998472239
+      World Conquest (1) 1_21: -1104791611574944398
+      World Conquest (1) 1_22: 2225457887102568606
+      World Conquest (1) 1_23: -8726323272493279799
+      World Conquest (1) 1_24: -6570831549343229913
+      World Conquest (1) 1_25: 7914238294321311176
+      World Conquest (1) 1_26: -5629489506155346996
+      World Conquest (1) 1_27: 4640435334281832175
+      World Conquest (1) 1_3: 5094322640251627908
+      World Conquest (1) 1_4: 1944900061142266697
+      World Conquest (1) 1_5: -2269323523064442129
+      World Conquest (1) 1_6: -5407451006434529843
+      World Conquest (1) 1_7: 2129334596040568541
+      World Conquest (1) 1_8: 436518109631140076
+      World Conquest (1) 1_9: 8089079457037924377
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
