@@ -27,7 +27,6 @@ public class GameManagerScript : MonoBehaviour
     private TurnPhaseManager turnPhaseStateMachine = new();
 
     
-
     void Start()
     {
         turnPhaseStateMachine.PhaseChanged += _testSubscriber.stateHasChanged;
