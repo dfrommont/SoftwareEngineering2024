@@ -25,7 +25,6 @@ public class GameManagerScript : MonoBehaviour
         { "Harold", "Horace", "Henry", "Hermine", "Hetty", "Harriet" };
 
     private TurnPhaseManager turnPhaseStateMachine = new();
-
     
     void Start()
     {
