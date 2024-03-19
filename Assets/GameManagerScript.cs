@@ -20,6 +20,7 @@ public class GameManagerScript : MonoBehaviour
     private Player currentPlayer;
     private Queue<Player> playerList = new();
     private TestSubscriber _testSubscriber = new TestSubscriber();
+    private List<Country> unoccupiedCountries = new();
 
     private List<string> playerNames = new()
         { "Harold", "Horace", "Henry", "Hermine", "Hetty", "Harriet" };
@@ -29,8 +30,56 @@ public class GameManagerScript : MonoBehaviour
     void Start()
     {
         turnPhaseStateMachine.PhaseChanged += _testSubscriber.stateHasChanged;
+        initCountries();
         generatePlayers();
+        availableToDraft = calculateArmiesToAllocate();
+        unoccupiedCountries = countries.Values.ToList();
+
+        //generate deck of risk cards
+        
+        //prepare for first turn
+        nextPlayerTurn();
+        
+    }
+
+
+    private void deploy(Country deployToCountry)
+    {
+        if (turnPhaseStateMachine.getTurnPhase() != TurnPhase.Deploy)
+        {
+            throw new Exception("not in initial setup phase!");
+        }
+        
+
+        if (unoccupiedCountries.Any()) //if unoccupiedCountries has elements - i.e. still deploying to unoccupied countries
+        {
+            if (deployToCountry.getPlayer() != null)
+            {
+                throw new Exception("can't deploy to occupied country yet, still unoccupied countries remaining!");
+            }
+
+            unoccupiedCountries.Remove(deployToCountry);
+        }
+        else // if unoccupiedCountries has no elements - i.e. finished deploying to unoccupied countries
+        {
+            if (deployToCountry.getPlayer() != currentPlayer)
+            {
+                throw new Exception("can't deploy to country occupied by another player!");
+            }
+        }
+        deployToCountry.setPlayer(currentPlayer);
+        deployToCountry.addArmies(1);
+        availableToDraft--;
+        nextPlayerTurn();
+        if (availableToDraft == 0)
+        {
+            turnPhaseStateMachine.changePhase();
+        }
+    }
+    private int calculateArmiesToAllocate()
+    {
         //determine number of armies to allocate to players
+        //global amount of armies is multiplied by number of players
         int armiesToAllocate;
         switch (numberOfPlayers)
         {
@@ -49,19 +98,14 @@ public class GameManagerScript : MonoBehaviour
             default:
                 throw new Exception("must have at least 3 players! number of players: "+ numberOfPlayers);
         }
-        //set unallocated armies for all players
-        Debug.Log(armiesToAllocate);
-        
-        //prepare for first turn
-        nextPlayerTurn();
-        initCountries();
-    }
 
+        return armiesToAllocate * numberOfPlayers;
+    }
     int getAvailableToDraft(){
         return availableToDraft;
     }
 
-    public bool fortify(string player, Country origin, Country destination, int count){
+    public bool fortify(Player player, Country origin, Country destination, int count){
 
         // Check if fortify is a valid move in gamestate.
         if (turnPhaseStateMachine.getTurnPhase() != TurnPhase.Fortify)

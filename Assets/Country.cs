@@ -21,7 +21,7 @@ public class Country
             return list;
         }
     }
-    [JsonIgnore] private string player;
+    [JsonIgnore] private Player player;
 
     public int getID() {
         return id;
@@ -37,10 +37,14 @@ public class Country
         return true;
     }
 
-    public string getPlayer() {
-        return "";
+    public Player getPlayer() {
+        return player;
     }
 
+    public void setPlayer(Player newOwnerPlayer)
+    {
+        this.player = newOwnerPlayer;
+    }
     public int getArmiesCount() {
         return armiesCount;
     }
