@@ -8,9 +8,13 @@ public class GameInterface: MonoBehaviour
     private GameEnvironment gameEnvironment = GameEnvironment.Local;
     public GameManager gameManager;
     public event Action<TurnPhase> TurnPhaseChanged;
+    public event Action<Player> CurrentPlayerChanged;
+    public event Action<Player> PlayerAdded;
 
     void Start(){
         gameManager.TurnPhaseChanged += turnPhaseChanged;
+        gameManager.CurrentPlayerChanged += currentPlayerChanged;
+        gameManager.PlayerAdded += playerAdded;
     }
 
     public bool nextPhase(){
@@ -18,6 +22,26 @@ public class GameInterface: MonoBehaviour
         {
             case GameEnvironment.Local:
                 return gameManager.nextPhase();
+            default:
+                return false;
+        }
+    }
+
+    public bool createPlayer(string name){
+        switch (gameEnvironment)
+        {
+            case GameEnvironment.Local:
+                return gameManager.createPlayer(name);
+            default:
+                return false;
+        }
+    }
+
+    public bool startGame(){
+        switch (gameEnvironment)
+        {
+            case GameEnvironment.Local:
+                return gameManager.startGame();
             default:
                 return false;
         }
@@ -45,6 +69,16 @@ public class GameInterface: MonoBehaviour
         Debug.Log(a);
         TurnPhaseChanged?.Invoke(a);
         Debug.Log("GI");
+    }
+    public void currentPlayerChanged(Player a){
+        Debug.Log(a);
+        CurrentPlayerChanged?.Invoke(a);
+        Debug.Log("PCGI");
+    }
+    public void playerAdded(Player a){
+        Debug.Log(a);
+        PlayerAdded?.Invoke(a);
+        Debug.Log("PAGI");
     }
 }
 

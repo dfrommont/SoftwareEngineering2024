@@ -5,6 +5,7 @@ using UnityEngine;
 
 public enum TurnPhase
 {
+    Setup,
     Draft,
     Attack,
     Fortify,
@@ -16,8 +17,7 @@ public class TurnPhaseManager
 
     public TurnPhaseManager()
     {
-        currentPhase = TurnPhase.Deploy;
-        EnteredDeploy?.Invoke();
+        currentPhase = TurnPhase.Setup;
     }
 
     public event Action<TurnPhase> PhaseChanged;
@@ -30,6 +30,9 @@ public class TurnPhaseManager
     public void nextTurnPhase()
     {
         switch (currentPhase) {
+            case TurnPhase.Setup:
+                currentPhase = TurnPhase.Deploy;
+                break;
             case TurnPhase.Deploy:
                 currentPhase = TurnPhase.Draft;
                 EnteredDraft?.Invoke();

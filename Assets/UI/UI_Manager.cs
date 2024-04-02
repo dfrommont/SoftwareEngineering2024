@@ -15,7 +15,6 @@ public class UI_Manager : MonoBehaviour
     public TroopMovement_Script troopMovement;
     public DialogBox_Script dialogBox;
     public CardMenu_script cardMenu;
-    public Players_Script players;
     public Overlay_Script overlay;
     public NextStage_Script nextStage;
     public CardHolder_Script cardHolder;
@@ -28,10 +27,12 @@ public class UI_Manager : MonoBehaviour
 
     // Start is called before the first frame update
     private void Start() {
+        map.CountryClick += countryClicked;
         // background.setMessage("Our UI is better than Michael's team's UI");
         overlay.updateTurnPhaseIndicator(TurnPhase.Deploy);
         gameInterface.TurnPhaseChanged += turnPhaseChanged;
-        map.CountryClick += countryClicked;
+        
+        troopMovement.toggle();
     }
 
     public void menuButtonClicked() {

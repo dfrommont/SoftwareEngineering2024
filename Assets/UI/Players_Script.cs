@@ -5,38 +5,26 @@ using UnityEngine;
 
 public class Players_Script : MonoBehaviour
 {
-    public UI_Manager manager;
-    public Players_Script players;
-
-    public GameObject player1;
-    public TMP_Text player1_Name;
-    public GameObject player2;
-    public TMP_Text player2_Name;
-    public GameObject player3;
-    public TMP_Text player3_Name;
-    public GameObject player4;
-    public TMP_Text player4_Name;
-    public GameObject player5;
-    public TMP_Text player5_Name;
-    public GameObject player6;
-    public TMP_Text player6_Name;
-
-    public Dictionary<string, TMP_Text> playerRecord;
+    public GameInterface gameInterface;
+    public GameObject player_card_prefab;
+    public Transform player_card_parent;
+    private List<GameObject> player_cards = new List<GameObject>();
 
     public void Start()
     {
-        playerRecord = new Dictionary<string, TMP_Text>() {
-            { "player1", player1_Name },
-            { "player2", player2_Name },
-            { "player3", player3_Name },
-            { "player4", player4_Name },
-            { "player5", player5_Name },
-            { "player6", player6_Name },
-        };
+        gameInterface.PlayerAdded += playerAdded;
+        gameInterface.CurrentPlayerChanged += currentPlayerChanged;
     }
 
-    public void addPLayer(string player, string name)
-    {
-        playerRecord[player].SetText(name);
+    void playerAdded(Player player){
+        var card = Instantiate(player_card_prefab, player_card_parent);
+        var test = card.GetComponent<PlayerCardPrefabScript>();
+        test.setText(player.getName());
+        test.setColor(player.getColor());
+        player_cards.Add(card);
+    }
+
+    void currentPlayerChanged(Player player) {
+        //TODO Highlight current player
     }
 }

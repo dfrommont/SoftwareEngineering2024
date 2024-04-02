@@ -31,7 +31,7 @@ public class MapScript : MonoBehaviour
         countryColors[0] = new Color(0f, 0.3f, 0.8f, 1f);
 
         countryTimes = new float[gameManager.getCountries().Count+1];
-
+        Debug.Log(countryTimes.Length);
         calculateColors();
         renderMap();
         // material.SetTexture("_ColorMapTexture", indexMap);
@@ -78,14 +78,11 @@ public class MapScript : MonoBehaviour
         //         // }
         //     }
         // }
-        // Example: Apply changes to the texture
         // visualMap.Apply();
         // material.SetTexture("test", visualMap);
     }
     private int GetCountryIDFromColor(Color color)
     {
-        // Example: Implement logic to map color to country ID
-        // You might need a reverse mapping from colors to country IDs
         return Mathf.RoundToInt(color.r * 255);
     }
     public void Update() {
@@ -98,8 +95,9 @@ public class MapScript : MonoBehaviour
         currentCountryID = Mathf.RoundToInt(indexMap.GetPixel(x, y).r*255);
        
         if(currentCountryID!=0){
-             countryTimes[currentCountryID] = Time.time;
-            Debug.Log(countryTimes[currentCountryID]);
+            // Debug.Log(currentCountryID);
+            countryTimes[currentCountryID] = Time.time;
+            // Debug.Log(countryTimes[currentCountryID]);
         }
         renderMap();
     }

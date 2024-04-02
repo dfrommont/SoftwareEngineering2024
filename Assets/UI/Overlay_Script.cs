@@ -13,13 +13,14 @@ public class Overlay_Script : MonoBehaviour
     public TMP_Text draftSign;
     public TMP_Text attackSign;
     public TMP_Text fortifySign;
-    private float start = Time.time;
+    private float start;
     private int highlighted = 0;
     private bool timerPaused = false;
     private float pausedTime = -1;
 
     private void Start()
     {
+        start = Time.time;
         InvokeRepeating("Timer", 0f, 1f);
     }
 

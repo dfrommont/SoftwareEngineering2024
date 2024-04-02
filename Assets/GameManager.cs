@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     private TestSubscriber _testSubscriber = new TestSubscriber();
     private List<Country> unoccupiedCountries = new();
     public event Action<TurnPhase> TurnPhaseChanged;
+    public event Action<Player> CurrentPlayerChanged;
+    public event Action<Player> PlayerAdded;
 
     private List<string> playerNames = new()
         { "Harold", "Horace", "Henry", "Hermine", "Hetty", "Harriet" };
@@ -33,7 +35,18 @@ public class GameManager : MonoBehaviour
     {
         turnPhaseStateMachine.PhaseChanged += turnPhaseChanged;
         initCountries();
-        generatePlayers();
+    }
+
+    public bool startGame(){
+        // Validate game is in a valid state
+        if(playerList.Count<2){
+            Debug.Log("Not enough players");
+            return false;
+        } else if (playerList.Count>6){
+            Debug.Log("Too many players");
+            return false;
+        }
+        nextPhase();
         availableToDraft = calculateArmiesToAllocate();
         unoccupiedCountries = countries.Values.ToList();
 
@@ -41,7 +54,8 @@ public class GameManager : MonoBehaviour
         
         //prepare for first turn
         nextPlayerTurn();
-        
+        Debug.Log("COMPLETE");
+        return true;
     }
 
     public List<Country> getCountries(){
@@ -160,6 +174,13 @@ public class GameManager : MonoBehaviour
         destination.addArmies(count);
         return true;
     }
+
+    public bool createPlayer(string name) {
+        var pl = new Player(name);
+        playerList.Enqueue(pl);
+        PlayerAdded?.Invoke(pl);
+        return true;
+    }
     void generatePlayers()
     {
         //generate player names for number of players
@@ -177,6 +198,7 @@ public class GameManager : MonoBehaviour
     {
         currentPlayer = playerList.Dequeue();
         playerList.Enqueue(currentPlayer);
+        CurrentPlayerChanged?.Invoke(currentPlayer);
     }
 
     void initCountries(){
