@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
 
-
+[System.Serializable]
 public class Country
 {
-    [SerializeField] private int id;
-    [SerializeField] private string display_name;
+    public int id;
+    public string display_name;
     [SerializeField] private int armiesCount = 0;
 
-    [SerializeField] private List<int> connections = new List<int>();
-    [JsonIgnore] private List<Country> neighbours = new List<Country>();
+    [SerializeField]
+    private List<int> connections = new List<int>();
+    [JsonIgnore]
+    private List<Country> neighbours = new List<Country>();
     [JsonIgnore] private List<int> neighbour_ids {
         get {
             var list = new List<int>();
@@ -25,6 +27,9 @@ public class Country
 
     public int getID() {
         return id;
+    }
+    public string getName() {
+        return display_name;
     }
 
     public bool addArmies(int count) {

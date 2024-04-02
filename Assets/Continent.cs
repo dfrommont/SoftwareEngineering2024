@@ -6,8 +6,8 @@ using Newtonsoft.Json;
 
 public class Continent
 {
-    [SerializeField] private int id;
-    [SerializeField] private string display_name;
+    public int id;
+    public string display_name;
     [SerializeField] private List<int> countries = new List<int>();
     [JsonIgnore] private List<Country> country_objects = new List<Country>();
     [JsonIgnore] private List<int> country_ids {
