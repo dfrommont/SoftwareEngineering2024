@@ -25,6 +25,13 @@ public class UI_Manager : MonoBehaviour
     {
         background.setMessage("Our UI is better than Michelle's team's UI");
         overlay.highlight();
+        addPlayer("player2", "harry");
+        troopMovement.toggle();
+    }
+
+    public void addPlayer(string player, string name)
+    {
+        players.addPLayer(player, name);
     }
 
     public void menuButtonClicked()
