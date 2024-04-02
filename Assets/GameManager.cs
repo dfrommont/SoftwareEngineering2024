@@ -199,4 +199,9 @@ public class GameManager : MonoBehaviour
             pair.Value.initCountries(countries);
         }
     }
+
+    internal bool fortify(string player, Country origin, Country destination, int count)
+    {
+        throw new NotImplementedException();
+    }
 }

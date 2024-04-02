@@ -9,6 +9,7 @@ public class Menu_Script : MonoBehaviour
     public UI_Manager manager;
     public Button button;
     public GameObject menu;
+    public Overlay_Script overlay;
     public bool defaultView = true;
     public bool onScreen;
 
