@@ -6,6 +6,7 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Random = System.Random;
 
 
@@ -40,6 +41,57 @@ public class GameManagerScript : MonoBehaviour
         //prepare for first turn
         nextPlayerTurn();
         
+    }
+
+    public void draft(Country draftToCountry, Player player, int amountToDraft)
+    {
+        if (turnPhaseStateMachine.getTurnPhase()!=TurnPhase.Draft)
+        {
+            throw new Exception("not in draft phase!");
+        }
+        if (draftToCountry.getPlayer() != player)
+        {
+            throw new Exception("can't draft to country not owned by this player!");
+        }
+        if (amountToDraft > availableToDraft)
+        {
+            throw new Exception("can't draft more armies than are available to draft");
+        }
+
+        draftToCountry.addArmies(amountToDraft);
+        availableToDraft -= amountToDraft;
+
+    }
+
+    private int calculateAvailableToDraft()
+    {
+        if (turnPhaseStateMachine.getTurnPhase()!=TurnPhase.Draft)
+        {
+            throw new Exception("not in draft phase!");
+        }
+        int amountAvailableToDraft = 0;
+        //calculate territory bonus
+        int territoriesOwnedByCurrentPlayer = 0;
+        foreach (var country in countries.Values)
+        {
+            if (country.getPlayer()==currentPlayer)
+            {
+                territoriesOwnedByCurrentPlayer++;
+            }
+        }
+        amountAvailableToDraft += territoriesOwnedByCurrentPlayer / 3;
+        //calculate continent bonus
+        foreach (var continent in continents.Values)
+        {
+            if (continent.isAllOwnedByOnePlayer() && continent.getPlayer() == currentPlayer)
+            {
+                availableToDraft += continent.getContinentBonus();
+            }
+        }
+        
+        //ensure min of 3
+        return Math.Max(3, amountAvailableToDraft);
+
     }
 
 
