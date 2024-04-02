@@ -5,15 +5,25 @@ using UnityEngine;
 public class Player
 {
 
-    [SerializeField] private string playerName;
+    [SerializeField] private string name;
+    private Color color;
 
-    public Player(string playerName)
+    public Player(string name, Color color = new Color())
     {
-        this.playerName = playerName;
+        if (color.Equals(new Color())){
+            color = Random.ColorHSV(0f,1f,1f,1f,0.7f,0.7f,1f,1f);
+        }
+        this.name = name;
+        this.color = color;
     }
 
-    public string getPlayerName()
+    public string getName()
     {
-        return playerName;
+        return name;
+    }
+
+    public Color getColor()
+    {
+        return color;
     }
 }

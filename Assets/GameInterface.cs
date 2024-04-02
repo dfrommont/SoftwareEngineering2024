@@ -1,13 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class GameInterface
+public class GameInterface: MonoBehaviour
 {
     private GameEnvironment gameEnvironment = GameEnvironment.Local;
-    private GameManagerScript gameManager;
+    public GameManager gameManager;
+    public event Action<TurnPhase> TurnPhaseChanged;
 
-    bool fortify(string player, Country origin, Country destination, int count){
+    void Start(){
+        gameManager.TurnPhaseChanged += turnPhaseChanged;
+    }
+
+    public bool nextPhase(){
+        switch (gameEnvironment)
+        {
+            case GameEnvironment.Local:
+                return gameManager.nextPhase();
+            default:
+                return false;
+        }
+    }
+
+    public bool fortify(Player player, Country origin, Country destination, int count) {
         switch (gameEnvironment)
         {
             case GameEnvironment.Local:
@@ -15,6 +31,20 @@ public class GameInterface
             default:
                 return false;
         }
+    }
+    public bool deploy(Player player, int countryID) {
+        switch (gameEnvironment)
+        {
+            case GameEnvironment.Local:
+                return gameManager.deploy(player, countryID);
+            default:
+                return false;
+        }
+    }
+    public void turnPhaseChanged(TurnPhase a){
+        Debug.Log(a);
+        TurnPhaseChanged?.Invoke(a);
+        Debug.Log("GI");
     }
 }
 
