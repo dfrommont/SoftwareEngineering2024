@@ -193,6 +193,15 @@ public class GameManager : MonoBehaviour
             playerList.Enqueue(new Player(playerName));
         }
     }
+    public bool firstPlayer(int playerIndex){
+        for (int i = 0; i < playerIndex; i++)
+        {
+            currentPlayer = playerList.Dequeue();
+            playerList.Enqueue(currentPlayer);
+        }
+        CurrentPlayerChanged?.Invoke(currentPlayer);
+        return true;
+    }
 
     private void nextPlayerTurn()
     {

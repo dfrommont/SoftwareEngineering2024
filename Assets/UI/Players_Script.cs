@@ -18,13 +18,18 @@ public class Players_Script : MonoBehaviour
 
     void playerAdded(Player player){
         var card = Instantiate(player_card_prefab, player_card_parent);
-        var test = card.GetComponent<PlayerCardPrefabScript>();
-        test.setText(player.getName());
-        test.setColor(player.getColor());
+        var script = card.GetComponent<PlayerCardPrefabScript>();
+        script.setText(player.getName());
+        script.setColor(player.getColor());
+        script.setPlayer(player);
         player_cards.Add(card);
     }
 
     void currentPlayerChanged(Player player) {
-        //TODO Highlight current player
+        foreach (var player_card in player_cards)
+        {
+            var script = player_card.GetComponent<PlayerCardPrefabScript>();
+            script.setHighlight(script.getPlayer().getColor().Equals(player.getColor()));
+        }
     }
 }
