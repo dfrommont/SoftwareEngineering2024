@@ -1,0 +1,345 @@
+{
+    "meta": {
+        "display_name": "The Original Map"
+    },
+    "continents": {
+        "1": {
+            "id": 1,
+            "display_name": "North America",
+            "countries": [
+                2,3,6,11,14,27,28,30,41
+            ]
+        },
+        "2": {
+            "id": 2,
+            "display_name": "South America",
+            "countries": [
+                4,5,29,38
+            ]
+        },
+        "3": {
+            "id": 3,
+            "display_name": "Europe",
+            "countries": [
+                13,15,26,31,35,36,40
+            ]
+        },
+        "4": {
+            "id": 4,
+            "display_name": "Africa",
+            "countries": [
+                8,9,12,21,25,34
+            ]
+        },
+        "5": {
+            "id": 5,
+            "display_name": "Australia",
+            "countries": [
+                10,17,24,39
+            ]
+        },
+        "6": {
+            "id": 6,
+            "display_name": "Asia",
+            "countries": [
+                1,7,16,18,19,20,22,23,32,33,37,42
+            ]
+        }
+    },
+    "countries": {
+        "1": {
+            "id": 1,
+            "display_name": "Afghanistan",
+            "connections": [
+                36,37,7,16,22
+            ]
+        },
+        "2": {
+            "id": 2,
+            "display_name": "Alaska",
+            "connections": [
+                20,27,3
+            ]
+        },
+        "3": {
+            "id": 3,
+            "display_name": "Alberta",
+            "connections": [
+                2,27,28,41
+            ]
+        },
+        "4": {
+            "id": 4,
+            "display_name": "Argentina",
+            "connections": [
+                5,29
+            ]
+        },
+        "5": {
+            "id": 5,
+            "display_name": "Brazil",
+            "connections": [
+                25,4,29,38
+            ]
+        },
+        "6": {
+            "id": 6,
+            "display_name": "Central America",
+            "connections": [
+                41,11,38
+            ]
+        },
+        "7": {
+            "id": 7,
+            "display_name": "China",
+            "connections": [
+                1,37
+            ]
+        },
+        "8": {
+            "id": 8,
+            "display_name": "Congo",
+            "connections": [
+
+            ]
+        },
+        "9": {
+            "id": 9,
+            "display_name": "East Africa",
+            "connections": [
+
+            ]
+        },
+        "10": {
+            "id": 10,
+            "display_name": "Eastern Australia",
+            "connections": [
+
+            ]
+        },
+        "11": {
+            "id": 11,
+            "display_name": "Eastern US",
+            "connections": [
+
+            ]
+        },
+        "12": {
+            "id": 12,
+            "display_name": "Egypt",
+            "connections": [
+
+            ]
+        },
+        "13": {
+            "id": 13,
+            "display_name": "Great Britain",
+            "connections": [
+
+            ]
+        },
+        "14": {
+            "id": 14,
+            "display_name": "Greenland",
+            "connections": [
+
+            ]
+        },
+        "15": {
+            "id": 15,
+            "display_name": "Iceland",
+            "connections": [
+
+            ]
+        },
+        "16": {
+            "id": 16,
+            "display_name": "India",
+            "connections": [
+
+            ]
+        },
+        "17": {
+            "id": 17,
+            "display_name": "Indonesia",
+            "connections": [
+
+            ]
+        },
+        "18": {
+            "id": 18,
+            "display_name": "Irkutsk",
+            "connections": [
+
+            ]
+        },
+        "19": {
+            "id": 19,
+            "display_name": "Japan",
+            "connections": [
+
+            ]
+        },
+        "20": {
+            "id": 20,
+            "display_name": "Kamchatka",
+            "connections": [
+
+            ]
+        },
+        "21": {
+            "id": 21,
+            "display_name": "Madagascar",
+            "connections": [
+
+            ]
+        },
+        "22": {
+            "id": 22,
+            "display_name": "Middle East",
+            "connections": [
+
+            ]
+        },
+        "23": {
+            "id": 23,
+            "display_name": "Mongolia",
+            "connections": [
+
+            ]
+        },
+        "24": {
+            "id": 24,
+            "display_name": "New Guinea",
+            "connections": [
+
+            ]
+        },
+        "25": {
+            "id": 25,
+            "display_name": "North Africa",
+            "connections": [
+
+            ]
+        },
+        "26": {
+            "id": 26,
+            "display_name": "Northern Europe",
+            "connections": [
+
+            ]
+        },
+        "27": {
+            "id": 27,
+            "display_name": "Northwest Territor",
+            "connections": [
+
+            ]
+        },
+        "28": {
+            "id": 28,
+            "display_name": "Ontario",
+            "connections": [
+
+            ]
+        },
+        "29": {
+            "id": 29,
+            "display_name": "Peru",
+            "connections": [
+
+            ]
+        },
+        "30": {
+            "id": 30,
+            "display_name": "Quebec",
+            "connections": [
+
+            ]
+        },
+        "31": {
+            "id": 31,
+            "display_name": "Scandinavia",
+            "connections": [
+
+            ]
+        },
+        "32": {
+            "id": 32,
+            "display_name": "Siam",
+            "connections": [
+
+            ]
+        },
+        "33": {
+            "id": 33,
+            "display_name": "Siberia",
+            "connections": [
+
+            ]
+        },
+        "34": {
+            "id": 34,
+            "display_name": "South Africa",
+            "connections": [
+
+            ]
+        },
+        "35": {
+            "id": 35,
+            "display_name": "Southern Europe",
+            "connections": [
+
+            ]
+        },
+        "36": {
+            "id": 36,
+            "display_name": "Ukraine",
+            "connections": [
+
+            ]
+        },
+        "37": {
+            "id": 37,
+            "display_name": "Ural",
+            "connections": [
+
+            ]
+        },
+        "38": {
+            "id": 38,
+            "display_name": "Venezuela",
+            "connections": [
+
+            ]
+        },
+        "39": {
+            "id": 39,
+            "display_name": "Western Australia",
+            "connections": [
+
+            ]
+        },
+        "40": {
+            "id": 40,
+            "display_name": "Western Europe",
+            "connections": [
+
+            ]
+        },
+        "41": {
+            "id": 41,
+            "display_name": "Western US",
+            "connections": [
+
+            ]
+        },
+        "42": {
+            "id": 42,
+            "display_name": "Yakutsk",
+            "connections": [
+
+            ]
+        }
+    }
+}
