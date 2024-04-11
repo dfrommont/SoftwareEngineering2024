@@ -65,15 +65,6 @@ public class GameInterface: MonoBehaviour
                 return false;
         }
     }
-    public bool firstPlayer(int playerIndex) {
-        switch (gameEnvironment)
-        {
-            case GameEnvironment.Local:
-                return gameManager.firstPlayer(playerIndex);
-            default:
-                return false;
-        }
-    }
     public void turnPhaseChanged(TurnPhase a){
         Debug.Log(a);
         TurnPhaseChanged?.Invoke(a);
