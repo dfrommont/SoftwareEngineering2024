@@ -17,6 +17,7 @@ public class Players_Script : MonoBehaviour
     }
 
     void playerAdded(Player player){
+        Debug.Log("PLAYER ADDED");
         var card = Instantiate(player_card_prefab, player_card_parent);
         var script = card.GetComponent<PlayerCardPrefabScript>();
         script.setText(player.getName());
@@ -29,7 +30,10 @@ public class Players_Script : MonoBehaviour
         foreach (var player_card in player_cards)
         {
             var script = player_card.GetComponent<PlayerCardPrefabScript>();
-            script.setHighlight(script.getPlayer().getColor().Equals(player.getColor()));
+            var scriptPlayer = script.getPlayer();
+            var scriptColor = scriptPlayer.getColor();
+            var color = player.getColor();
+            script.setHighlight(scriptColor.Equals(color));
         }
     }
 }
