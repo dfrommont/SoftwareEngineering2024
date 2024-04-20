@@ -28,7 +28,6 @@ public class UI_Manager : MonoBehaviour
     // Start is called before the first frame update
     private void Start() {
         map.CountryClick += countryClicked;
-        // background.setMessage("Our UI is better than Michael's team's UI");
         overlay.updateTurnPhaseIndicator(TurnPhase.Deploy);
         gameInterface.TurnPhaseChanged += turnPhaseChanged;
         
@@ -54,10 +53,6 @@ public class UI_Manager : MonoBehaviour
         if (troopMovement.isOnScreen())
         {
             troopMovement.toggle();
-        }
-        if (dialogBox.isOnScreen())
-        {
-            dialogBox.toggle();
         }
         if (cardMenu.isOnScreen())
         {
