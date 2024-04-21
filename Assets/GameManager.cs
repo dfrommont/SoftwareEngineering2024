@@ -53,7 +53,6 @@ public class GameManager : MonoBehaviour
         //generate deck of risk cards
         
         //prepare for first turn
-        nextPlayerTurn();
         Debug.Log("COMPLETE");
         return true;
     }
@@ -194,7 +193,7 @@ public class GameManager : MonoBehaviour
         }
     }
     public bool firstPlayer(int playerIndex){
-        for (int i = 0; i < playerIndex; i++)
+        for (int i = 0; i < playerIndex+1; i++)
         {
             currentPlayer = playerList.Dequeue();
             playerList.Enqueue(currentPlayer);
