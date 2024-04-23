@@ -15,7 +15,7 @@ public class DiceRoll_Script : MonoBehaviour
     public Image dice6;
     public Button rollButton;
     protected Dictionary<int, Image> images;
-    private bool defaultView = true;
+    private bool defaultView = false;
     private bool onScreen;
     private bool rolled = false;
 
@@ -31,7 +31,7 @@ public class DiceRoll_Script : MonoBehaviour
             { 6, dice6 },
         };
         diceRoll.SetActive(defaultView);
-        rollButton.gameObject.SetActive(true);
+        rollButton.gameObject.SetActive(defaultView);
         onScreen = defaultView;
         rollButton.onClick.AddListener(roll);
     }
@@ -43,10 +43,10 @@ public class DiceRoll_Script : MonoBehaviour
         {
             rolled = true;
             int randomNumber = Random.Range(1, 6);
-            for (int i = 0; i < images.Count; i++)
+            for (int i = 1; i <= images.Count; i++)
             {
                 images[i].enabled = false;
-                if (i == randomNumber-1) { images[i].enabled = true; }
+                if (i == randomNumber) { images[i].enabled = true; }
             }
         }
     }

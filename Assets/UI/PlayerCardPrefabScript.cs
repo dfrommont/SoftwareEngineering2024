@@ -10,6 +10,7 @@ public class PlayerCardPrefabScript : MonoBehaviour
     public GameObject box;
     public GameObject inset;
     private Player plyr;
+
     public void setText(string player_name){
         text.text = player_name;
     }

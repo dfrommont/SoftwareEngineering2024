@@ -104,4 +104,18 @@ public class UI_Manager : MonoBehaviour
                 break;
         }
     }
+
+    public void popup(string mode, string message, int time = 5)
+    {
+        switch(mode)
+        {
+            case "long":
+                dialogBox.longMessage(message);
+                break;
+            default:
+                dialogBox.shortMessage(message, time); 
+                break;
+
+        }
+    }
 }
