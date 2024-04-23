@@ -76,6 +76,57 @@ public class GameManager : MonoBehaviour
         Debug.Log("GM");
     }
 
+    public bool draft(Player player, int countryID, int amountToDraft)
+    {
+        Country draftToCountry = countries[countryID];
+        if (turnPhaseStateMachine.getTurnPhase()!=TurnPhase.Draft)
+        {
+            throw new Exception("not in draft phase!");
+        }
+        if (draftToCountry.getPlayer() != player)
+        {
+            throw new Exception("can't draft to country not owned by this player!");
+        }
+        if (amountToDraft > availableToDraft)
+        {
+            throw new Exception("can't draft more armies than are available to draft");
+        }
+        draftToCountry.addArmies(amountToDraft);
+        availableToDraft -= amountToDraft;
+
+        return true;
+    }
+    private int calculateAvailableToDraft()
+    {
+        if (turnPhaseStateMachine.getTurnPhase()!=TurnPhase.Draft)
+        {
+            throw new Exception("not in draft phase!");
+        }
+        int amountAvailableToDraft = 0;
+        //calculate territory bonus
+        int territoriesOwnedByCurrentPlayer = 0;
+        foreach (var country in countries.Values)
+        {
+            if (country.getPlayer()==currentPlayer)
+            {
+                territoriesOwnedByCurrentPlayer++;
+            }
+        }
+        amountAvailableToDraft += territoriesOwnedByCurrentPlayer / 3;
+        //calculate continent bonus
+        foreach (var continent in continents.Values)
+        {
+            if (continent.isAllOwnedByOnePlayer() && continent.getPlayer() == currentPlayer)
+            {
+                availableToDraft += continent.getContinentBonus();
+            }
+        }
+        
+        //ensure min of 3
+        return Math.Max(3, amountAvailableToDraft);
+
+    }
+
     public bool deploy(Player player, int countryID)
     {
         Country deployToCountry = countries[countryID];
