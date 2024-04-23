@@ -56,6 +56,17 @@ public class GameInterface: MonoBehaviour
                 return false;
         }
     }
+
+    public bool draft(Player player, int countryID, int amountToDraft)
+    {
+        switch (gameEnvironment)
+        {
+            case GameEnvironment.Local:
+                return gameManager.draft(player, countryID, amountToDraft);
+            default:
+                return false;
+        }
+    }
     public bool deploy(Player player, int countryID) {
         switch (gameEnvironment)
         {
