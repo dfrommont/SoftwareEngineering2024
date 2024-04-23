@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     public event Action<TurnPhase> TurnPhaseChanged;
     public event Action<Player> CurrentPlayerChanged;
     public event Action<Player> PlayerAdded;
+    public event Action CountryChanged;
 
     private List<string> playerNames = new()
         { "Harold", "Horace", "Henry", "Hermine", "Hetty", "Harriet" };
@@ -71,8 +72,15 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
-    public void turnPhaseChanged(TurnPhase turnPhase){
+    public void turnPhaseChanged(TurnPhase turnPhase)
+    {
         TurnPhaseChanged?.Invoke(turnPhase);
+        Debug.Log("GM");
+    }
+
+    public void countryChanged()
+    {
+        CountryChanged?.Invoke();
         Debug.Log("GM");
     }
 
