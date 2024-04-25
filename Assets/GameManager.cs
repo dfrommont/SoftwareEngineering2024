@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     private List<Country> unoccupiedCountries = new();
     private RiskCardDeck riskCardDeck;
     private int setsOfRiskCardsTradedIn;
+    private bool anyCountryCapturedThisTurn;
     public event Action<TurnPhase> TurnPhaseChanged;
     public event Action<Player> CurrentPlayerChanged;
     public event Action<Player> PlayerAdded;
@@ -36,7 +37,18 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         turnPhaseStateMachine.PhaseChanged += turnPhaseChanged;
+        turnPhaseStateMachine.EndedTurn += endOfTurnActions;
         initCountries();
+    }
+
+    private void endOfTurnActions()
+    {
+        if (anyCountryCapturedThisTurn)
+        {
+            currentPlayer.addRiskCardToHand(riskCardDeck.drawCard());
+        }
+
+        anyCountryCapturedThisTurn = false;
     }
 
     public bool startGame(){
