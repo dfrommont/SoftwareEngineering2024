@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     private Queue<Player> playerList = new();
     private TestSubscriber _testSubscriber = new TestSubscriber();
     private List<Country> unoccupiedCountries = new();
+    private RiskCardDeck riskCardDeck;
+    private int setsOfRiskCardsTradedIn;
     public event Action<TurnPhase> TurnPhaseChanged;
     public event Action<Player> CurrentPlayerChanged;
     public event Action<Player> PlayerAdded;
@@ -49,9 +51,10 @@ public class GameManager : MonoBehaviour
         nextPhase();
         availableToDraft = calculateArmiesToAllocate();
         unoccupiedCountries = countries.Values.ToList();
+        setsOfRiskCardsTradedIn = 0;
 
         //generate deck of risk cards
-        
+        riskCardDeck = new RiskCardDeck();
         //prepare for first turn
         nextPlayerTurn();
         Debug.Log("COMPLETE");
@@ -76,7 +79,75 @@ public class GameManager : MonoBehaviour
         TurnPhaseChanged?.Invoke(turnPhase);
         Debug.Log("GM");
     }
+    public bool tradeInCards(List<RiskCard> cardsToTradeIn)
+    {
+        if (!isValidCardTradeIn(cardsToTradeIn))
+        {
+            throw new Exception("invalid trade!");
+        }
+        availableToDraft += calculateArmiesFromTradedCards(cardsToTradeIn);
+        foreach (var card in cardsToTradeIn)
+        {
+            currentPlayer.removeRiskCardFromHand(card);
+        }
+        setsOfRiskCardsTradedIn++;
+        return true;
+    }
 
+    private int calculateArmiesFromTradedCards(List<RiskCard> cardsToTradeIn)
+    {
+        int amount = 0;
+        switch (setsOfRiskCardsTradedIn)
+        {
+            case <5:
+                amount = 2 * setsOfRiskCardsTradedIn + 4;
+                break;
+            case >=5:
+                amount = (setsOfRiskCardsTradedIn - 2) * 5;
+                break;
+        }
+
+        bool playerOccupiesCountryOnCard = false;
+        foreach (var card in cardsToTradeIn)
+        {
+            int cardCountryID = card.getCountryID();
+            if (countries[cardCountryID].getPlayer() == currentPlayer)
+            {
+                amount += 2;
+            }
+        }
+        //TODO - add check to ensure can only get bonus from occupying territory on card once per turn
+
+
+        return amount;
+    }
+
+    private bool isValidCardTradeIn(List<RiskCard> cards)
+    {
+        if (cards.Count != 3)
+        {
+            return false;
+        }
+
+        List<RiskCardType> cardTypes = cards.Select(item => item.getRiskCardType()).ToList();
+        //if all cards are the same type
+        if (cardTypes.All(x=>x==cardTypes[0]))
+        {
+            return true;
+        }
+        //if all cards are different types
+        if (cardTypes.Distinct().Count() == cardTypes.Count())
+        {
+            return true;
+        }
+        //if any of the cards are a wild card
+        if (cardTypes.Any(x=>x==RiskCardType.Wild))
+        {
+            return true;
+        }
+        //otherwise
+        return false;
+    }
     public bool deploy(Player player, int countryID)
     {
         Country deployToCountry = countries[countryID];
