@@ -10,11 +10,13 @@ public class GameInterface: MonoBehaviour
     public event Action<TurnPhase> TurnPhaseChanged;
     public event Action<Player> CurrentPlayerChanged;
     public event Action<Player> PlayerAdded;
+    public event Action CountryChanged;
 
     void Start(){
         gameManager.TurnPhaseChanged += turnPhaseChanged;
         gameManager.CurrentPlayerChanged += currentPlayerChanged;
         gameManager.PlayerAdded += playerAdded;
+        gameManager.CountryChanged += countryChanged;
     }
 
     public bool nextPhase(){
@@ -56,6 +58,17 @@ public class GameInterface: MonoBehaviour
                 return false;
         }
     }
+
+    public bool draft(Player player, int countryID, int amountToDraft)
+    {
+        switch (gameEnvironment)
+        {
+            case GameEnvironment.Local:
+                return gameManager.draft(player, countryID, amountToDraft);
+            default:
+                return false;
+        }
+    }
     public bool deploy(Player player, int countryID) {
         switch (gameEnvironment)
         {
@@ -63,6 +76,26 @@ public class GameInterface: MonoBehaviour
                 return gameManager.deploy(player, countryID);
             default:
                 return false;
+        }
+    }
+    public bool firstPlayer(int playerIndex) {
+        switch (gameEnvironment)
+        {
+            case GameEnvironment.Local:
+                return gameManager.firstPlayer(playerIndex);
+            default:
+                return false;
+        }
+    }
+
+    public List<Country> getCountries()
+    {
+        switch (gameEnvironment)
+        {
+            case GameEnvironment.Local:
+                return gameManager.getCountries();
+            default:
+                return null;
         }
     }
     public void turnPhaseChanged(TurnPhase a){
@@ -75,10 +108,16 @@ public class GameInterface: MonoBehaviour
         CurrentPlayerChanged?.Invoke(a);
         Debug.Log("PCGI");
     }
-    public void playerAdded(Player a){
+    public void playerAdded(Player a)
+    {
         Debug.Log(a);
         PlayerAdded?.Invoke(a);
         Debug.Log("PAGI");
+    }
+    public void countryChanged()
+    {
+        CountryChanged?.Invoke();
+        Debug.Log("CCGI");
     }
 }
 

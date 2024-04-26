@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     public event Action<TurnPhase> TurnPhaseChanged;
     public event Action<Player> CurrentPlayerChanged;
     public event Action<Player> PlayerAdded;
+    public event Action CountryChanged;
 
     private List<string> playerNames = new()
         { "Harold", "Horace", "Henry", "Hermine", "Hetty", "Harriet" };
@@ -68,7 +69,6 @@ public class GameManager : MonoBehaviour
         //generate deck of risk cards
         riskCardDeck = new RiskCardDeck();
         //prepare for first turn
-        nextPlayerTurn();
         Debug.Log("COMPLETE");
         return true;
     }
@@ -87,7 +87,8 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
-    public void turnPhaseChanged(TurnPhase turnPhase){
+    public void turnPhaseChanged(TurnPhase turnPhase)
+    {
         TurnPhaseChanged?.Invoke(turnPhase);
         Debug.Log("GM");
     }
@@ -140,7 +141,7 @@ public class GameManager : MonoBehaviour
         {
             return false;
         }
-
+        
         List<RiskCardType> cardTypes = cards.Select(item => item.getRiskCardType()).ToList();
         //if all cards are the same type
         if (cardTypes.All(x=>x==cardTypes[0]))
@@ -159,6 +160,63 @@ public class GameManager : MonoBehaviour
         }
         //otherwise
         return false;
+    }
+    
+    public void countryChanged()
+    {
+        CountryChanged?.Invoke();
+        Debug.Log("GM");
+    }
+
+    public bool draft(Player player, int countryID, int amountToDraft)
+    {
+        Country draftToCountry = countries[countryID];
+        if (turnPhaseStateMachine.getTurnPhase()!=TurnPhase.Draft)
+        {
+            throw new Exception("not in draft phase!");
+        }
+        if (draftToCountry.getPlayer() != player)
+        {
+            throw new Exception("can't draft to country not owned by this player!");
+        }
+        if (amountToDraft > availableToDraft)
+        {
+            throw new Exception("can't draft more armies than are available to draft");
+        }
+        draftToCountry.addArmies(amountToDraft);
+        availableToDraft -= amountToDraft;
+
+        return true;
+    }
+    private int calculateAvailableToDraft()
+    {
+        if (turnPhaseStateMachine.getTurnPhase()!=TurnPhase.Draft)
+        {
+            throw new Exception("not in draft phase!");
+        }
+        int amountAvailableToDraft = 0;
+        //calculate territory bonus
+        int territoriesOwnedByCurrentPlayer = 0;
+        foreach (var country in countries.Values)
+        {
+            if (country.getPlayer()==currentPlayer)
+            {
+                territoriesOwnedByCurrentPlayer++;
+            }
+        }
+        amountAvailableToDraft += territoriesOwnedByCurrentPlayer / 3;
+        //calculate continent bonus
+        foreach (var continent in continents.Values)
+        {
+            if (continent.isAllOwnedByOnePlayer() && continent.getPlayer() == currentPlayer)
+            {
+                availableToDraft += continent.getContinentBonus();
+            }
+        }
+        
+        //ensure min of 3
+        return Math.Max(3, amountAvailableToDraft);
+
     }
     public bool deploy(Player player, int countryID)
     {
@@ -275,6 +333,15 @@ public class GameManager : MonoBehaviour
             string playerName = playerNames[i];
             playerList.Enqueue(new Player(playerName));
         }
+    }
+    public bool firstPlayer(int playerIndex){
+        for (int i = 0; i < playerIndex+1; i++)
+        {
+            currentPlayer = playerList.Dequeue();
+            playerList.Enqueue(currentPlayer);
+        }
+        CurrentPlayerChanged?.Invoke(currentPlayer);
+        return true;
     }
 
     private void nextPlayerTurn()

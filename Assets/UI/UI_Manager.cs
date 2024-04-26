@@ -1,9 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using TMPro.EditorUtilities;
 using UnityEngine;
+using Newtonsoft.Json;
+using System.IO;
+using Newtonsoft.Json.Linq;
 
 public class UI_Manager : MonoBehaviour
 {
@@ -19,6 +18,7 @@ public class UI_Manager : MonoBehaviour
     public NextStage_Script nextStage;
     public CardHolder_Script cardHolder;
     public MapScript map;
+    public TroopNumbers_Script troopNumbers;
 
     private TurnPhase turnPhase = TurnPhase.Deploy;
 
@@ -28,9 +28,9 @@ public class UI_Manager : MonoBehaviour
     // Start is called before the first frame update
     private void Start() {
         map.CountryClick += countryClicked;
-        // background.setMessage("Our UI is better than Michael's team's UI");
         overlay.updateTurnPhaseIndicator(TurnPhase.Deploy);
         gameInterface.TurnPhaseChanged += turnPhaseChanged;
+        gameInterface.CountryChanged += updateTroopNum;
         
         troopMovement.toggle();
     }
@@ -54,10 +54,6 @@ public class UI_Manager : MonoBehaviour
         if (troopMovement.isOnScreen())
         {
             troopMovement.toggle();
-        }
-        if (dialogBox.isOnScreen())
-        {
-            dialogBox.toggle();
         }
         if (cardMenu.isOnScreen())
         {
@@ -107,6 +103,36 @@ public class UI_Manager : MonoBehaviour
                 break;
             case TurnPhase.Fortify:
                 break;
+        }
+    }
+
+    public void popup(string mode, string message = "", int time = 5)
+    {
+        switch(mode)
+        {
+            case "long":
+                dialogBox.longMessage(message);
+                break;
+            case "clear":
+                dialogBox.clear();
+                break;
+            default:
+                dialogBox.shortMessage(message, time); 
+                break;
+
+        }
+    }
+
+    public void updateTroopNum()
+    {
+        Debug.Log("troop numbers updated");
+        string text = File.ReadAllText(@"./countries.json");
+        JObject data = JObject.Parse(text);
+        string countryTokens = data["countries"].ToString();
+        Dictionary<int, Country> countriesList = JsonConvert.DeserializeObject<Dictionary<int, Country>>(countryTokens);
+        foreach (KeyValuePair<int, Country> pair in countriesList)
+        {
+            troopNumbers.changeNumber(pair.Value.ToString(), pair.Value.getArmiesCount());
         }
     }
 }

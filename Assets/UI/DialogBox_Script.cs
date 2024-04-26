@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +8,7 @@ public class DialogBox_Script : MonoBehaviour
 {
     public UI_Manager manager;
     public GameObject dialogBox;
-    public ClickerBackground_Script clickerBackground;
+    public TMP_Text text;
     private bool defaultView = false;
     private bool onScreen;
 
@@ -26,5 +27,22 @@ public class DialogBox_Script : MonoBehaviour
     public bool isOnScreen()
     {
         return onScreen;
+    }
+
+    public void longMessage(string message)
+    {
+        text.SetText(message);
+    }
+
+    public void clear()
+    {
+        text.SetText(string.Empty);
+    }
+
+    public void shortMessage(string message, int time)
+    {
+        text.SetText(message);
+        System.Threading.Thread.Sleep(time * 1000);
+        clear();
     }
 }
