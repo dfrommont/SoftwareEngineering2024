@@ -252,6 +252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 0}
+  cardcount: {fileID: 0}
   box: {fileID: 1179472245656858386}
   inset: {fileID: 0}
 --- !u!1 &3759419029291748901
@@ -480,5 +481,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 699869965783133212}
+  cardcount: {fileID: 8268936506569055530}
   box: {fileID: 4079750929310722193}
   inset: {fileID: 1179472245656858386}

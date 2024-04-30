@@ -21,6 +21,7 @@ public class UI_Manager : MonoBehaviour
     public MapScript map;
     public DraftArmiesUIScript draftScreen;
     public AttackUIScript attackScreen;
+    public FortifyUIScript fortifyScreen;
     public TroopNumbers_Script troopNumbers;
     
     private bool _clickingActive = false;
@@ -128,12 +129,30 @@ public class UI_Manager : MonoBehaviour
                         {
                             destinationCountry = country;
                             _clickingActive = false;
+                            Debug.Log(originCountry);
+                            Debug.Log(destinationCountry);
                             attackScreen.Show(originCountry, destinationCountry);
                         }
                     }
 
                     break;
                 case TurnPhase.Fortify:
+                    if (originCountry == -1)
+                    {
+                        if (gameInterface.isOwnCountry(country))
+                        {
+                            originCountry = country;
+                        }
+                    }
+                    else
+                    {
+                        if (gameInterface.isOwnCountry(country))
+                        {
+                            destinationCountry = country;
+                            _clickingActive = false;
+                            fortifyScreen.Show(originCountry, destinationCountry);
+                        }
+                    }
                     break;
             }
         }

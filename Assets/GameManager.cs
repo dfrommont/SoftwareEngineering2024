@@ -229,7 +229,7 @@ public class GameManager : MonoBehaviour
     }
 
     public bool fortify(Player player, Country origin, Country destination, int count){
-
+        Debug.Log("FORTIFY");
         // Check if fortify is a valid move in gamestate.
         if (turnPhaseStateMachine.getTurnPhase() != TurnPhase.Fortify)
         {
@@ -237,20 +237,24 @@ public class GameManager : MonoBehaviour
         }
         
         // Check both countries are owned by the same player
-        if(origin.getPlayer() != player){
+        if(origin.getPlayer() != currentPlayer){
+            // Debug.Log("orig");
             return false;
         }
-        if(destination.getPlayer() != player){
+        if(destination.getPlayer() != currentPlayer){
+            // Debug.Log("dest");
             return false;
         }
 
         // Check if destination country is a neigbour to the origin
         if(origin.isNeighbour(destination)){
+            Debug.Log("neighbour");
             return false;
         }
 
         // Check origin has count + 1 armies
         if(origin.getArmiesCount() > count){
+            Debug.Log("count");
             return false;
         }
 
@@ -258,6 +262,7 @@ public class GameManager : MonoBehaviour
         origin.removeArmies(count);
         destination.addArmies(count);
         countryChanged();
+        ResetEvent?.Invoke(0);
         return true;
     }
 
@@ -369,6 +374,8 @@ public class GameManager : MonoBehaviour
             attacker.removeArmies(defendCount);
             defender.removeArmies(attackCount);
         }
+        countryChanged();
+        ResetEvent?.Invoke(0);
         return true;
     }
     internal bool fortify(string player, Country origin, Country destination, int count)

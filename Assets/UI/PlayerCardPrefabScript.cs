@@ -16,7 +16,7 @@ public class PlayerCardPrefabScript : MonoBehaviour
         text.text = player_name;
     }
     public void setCardCount(int player_card_count){
-        cardcount.text = player_card_count + " Cards";
+        cardcount.text = player_card_count + " Card" + ((player_card_count==1) ? "" : "s");
     }
     
     public void setColor(Color color){
