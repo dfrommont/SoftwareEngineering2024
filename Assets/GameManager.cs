@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     {
         turnPhaseStateMachine.PhaseChanged += turnPhaseChanged;
         turnPhaseStateMachine.EndedTurn += endOfTurnActions;
+        CurrentPlayerChanged += onPlayerChangeAIDeployHandler;
         initCountries();
     }
 
@@ -91,7 +92,25 @@ public class GameManager : MonoBehaviour
     {
         TurnPhaseChanged?.Invoke(turnPhase);
         Debug.Log("GM");
+        //adding AI methods here
+        switch (turnPhaseStateMachine.getTurnPhase())
+        {
+            case TurnPhase.Draft:
+                doAIDraftPhase();
+                break;
+            
+            case TurnPhase.Attack:
+                doAIAttackPhase();
+                    
+                break;
+            case TurnPhase.Fortify:
+                doAIFortifyPhase();
+                break;
+        }
     }
+
+
+
     public bool tradeInCards(List<RiskCard> cardsToTradeIn)
     {
         if (!isValidCardTradeIn(cardsToTradeIn))
@@ -322,18 +341,7 @@ public class GameManager : MonoBehaviour
         PlayerAdded?.Invoke(pl);
         return true;
     }
-    void generatePlayers()
-    {
-        //generate player names for number of players
-        Random rnd = new Random();
-        playerNames = playerNames.OrderBy(x => rnd.Next()).Take(numberOfPlayers).ToList();
-        //populate playerList
-        for (int i = 0; i < numberOfPlayers; i++)
-        {
-            string playerName = playerNames[i];
-            playerList.Enqueue(new Player(playerName));
-        }
-    }
+
     public bool firstPlayer(int playerIndex){
         for (int i = 0; i < playerIndex+1; i++)
         {
@@ -349,6 +357,14 @@ public class GameManager : MonoBehaviour
         currentPlayer = playerList.Dequeue();
         playerList.Enqueue(currentPlayer);
         CurrentPlayerChanged?.Invoke(currentPlayer);
+    }
+
+    private void onPlayerChangeAIDeployHandler(Player player)
+    {
+        if (turnPhaseStateMachine.getTurnPhase() == TurnPhase.Deploy && currentPlayer.getIsAIPlayer())
+        {
+            doAiDeploy();
+        }
     }
 
     void initCountries(){
@@ -375,5 +391,171 @@ public class GameManager : MonoBehaviour
     internal bool fortify(string player, Country origin, Country destination, int count)
     {
         throw new NotImplementedException();
+    }
+    
+    public void doAiDeploy()
+    {
+        Country deployToCountry;
+        if (unoccupiedCountries.Any()) //if unoccupiedCountries has elements - i.e. still deploying to unoccupied countries
+        {
+            //choose an unoccupied country
+            Random rnd = new Random();
+            deployToCountry = unoccupiedCountries[rnd.Next(unoccupiedCountries.Count)];
+        }
+        else
+        {
+            //choose a country occupied by the current player
+            List<Country> thisPlayerCountries = getThisPlayerCountries();
+
+            Random rnd = new Random();
+            deployToCountry = thisPlayerCountries[rnd.Next(thisPlayerCountries.Count)];
+
+        }
+        //deploy to the selected country
+        deploy(currentPlayer, deployToCountry.getID());
+    }
+
+    private List<Country> getThisPlayerCountries()
+    {
+        //find this player's countries
+        List<Country> allCountries = getCountries();
+        List<Country> thisPlayerCountries = new List<Country>();
+        foreach (var country in allCountries)
+        {
+            if (country.getPlayer() == currentPlayer)
+            {
+                thisPlayerCountries.Add(country);
+            }
+        }
+
+        return thisPlayerCountries;
+    }
+    private Dictionary<Country, int> getCountriesAndEnemyNeighbours(List<Country> countries)
+    {
+        Dictionary<Country, int> countriesAndEnemyNeighbours = new Dictionary<Country, int>();
+
+        foreach (var country in countries)
+        {
+            int numberOfEnemyNeighbours = countEnemyNeighbours(country);
+            countriesAndEnemyNeighbours.Add(country, numberOfEnemyNeighbours);
+        }
+
+        return countriesAndEnemyNeighbours;
+    }
+    private int countEnemyNeighbours(Country country)
+    {
+        int numberOfEnemyNeighbours = 0;
+
+        foreach (var neighbour in country.getNeighbours())
+        {
+            if (neighbour.getPlayer() != currentPlayer)
+            {
+                numberOfEnemyNeighbours++;
+            }
+        }
+
+        return numberOfEnemyNeighbours;
+    }
+
+    private void doAIDraftPhase()
+    {
+        //get this players countries and how many enemy neighbours they have
+        Dictionary<Country, int> thisPlayerCountriesAndEnemyNeighbours = getCountriesAndEnemyNeighbours(getThisPlayerCountries());
+        //take top 10 (or up to 10) most surrounded countries
+        List<Country> candidateDraftCountries = thisPlayerCountriesAndEnemyNeighbours.OrderByDescending(x => x.Value)
+            .Select(x => x.Key)
+            .Take(10)
+            .ToList();
+
+        while (availableToDraft>0)
+        {
+            //get a dict of the candidate draft countries and their troop strengths
+            Dictionary<Country, int> candidateDraftCountriesAndTroopStrength = new Dictionary<Country, int>();
+            foreach (var country in candidateDraftCountries)
+            {
+                candidateDraftCountriesAndTroopStrength.Add(country, country.getArmiesCount());
+            }
+            //choose a country to draft to 
+            Country draftToCountry = candidateDraftCountriesAndTroopStrength.OrderBy(kvp => kvp.Value).First().Key;
+            draft(currentPlayer, draftToCountry.getID(),1);
+        }
+
+    }
+
+    private void doAIAttackPhase()
+    {
+        //probably do in a loop
+        //get this players countries
+        //get enemy neighbours for countries
+        //get quantity and or strength of neighbours
+        //choose some battles to do
+    }
+    private void doAIFortifyPhase()
+    {
+        //get valid countries to fortify from
+        List<Country> validFortifyFromCountries = getValidFortifyFromCountries();
+        //get this players countries and how many enemy neighbours they have
+        Dictionary<Country, int> thisPlayerCountriesAndEnemyNeighbours = getCountriesAndEnemyNeighbours(getThisPlayerCountries());
+  
+        //choose a country to fortify from
+        Country chosenFortifyFromCountry = getThisPlayerLeastSurroundedCountry(getValidFortifyFromCountries());
+        //choose an amount of troops to fortify
+        int maxFortifyAmount = chosenFortifyFromCountry.getArmiesCount() - 1;
+        Random rnd = new Random();
+        int amountToFortify = rnd.Next(1, maxFortifyAmount);
+
+        //choose a country to fortify to
+        Country chosenFortifyToCountry = getThisPlayerMostSurroundedCountry(getThisPlayerCountries());
+        
+        
+        
+        //do fortify if 2 different countries have been chosen as source and dest candidates
+        if (chosenFortifyFromCountry != chosenFortifyToCountry)
+        {
+            fortify(currentPlayer, chosenFortifyFromCountry, chosenFortifyToCountry, amountToFortify);
+
+        }
+
+    }
+
+    private List<Country> getValidFortifyFromCountries()
+    {
+        Dictionary<Country, int> thisPlayerCountriesAndArmiesCount =
+            getCountriesAndArmiesCount(getThisPlayerCountries());
+        List<Country> validFortifyFromCountries = new List<Country>();
+        foreach (var kvp in thisPlayerCountriesAndArmiesCount)
+        {
+            if (kvp.Value > 1)
+            {
+                validFortifyFromCountries.Add(kvp.Key);
+            }
+        }
+        return validFortifyFromCountries;
+    }
+
+    private Country getThisPlayerLeastSurroundedCountry(List<Country> countries)
+    {
+        Dictionary<Country, int> thisPlayerCountriesAndEnemyNeighbours =
+            getCountriesAndEnemyNeighbours(getThisPlayerCountries());
+        //return the country with the lowest number of enemy neighbours
+        return thisPlayerCountriesAndEnemyNeighbours.OrderBy(kvp => kvp.Value).FirstOrDefault().Key; 
+    }
+    private Country getThisPlayerMostSurroundedCountry(List<Country> countries)
+    {
+        Dictionary<Country, int> thisPlayerCountriesAndEnemyNeighbours =
+            getCountriesAndEnemyNeighbours(getThisPlayerCountries());
+        //return the country with the highest number of enemy neighbours
+        return thisPlayerCountriesAndEnemyNeighbours.OrderByDescending(kvp => kvp.Value).FirstOrDefault().Key; 
+    }
+
+    private Dictionary<Country, int> getCountriesAndArmiesCount(List<Country> countries)
+    {
+        Dictionary<Country, int> countriesAndArmiesCount = new Dictionary<Country, int>();
+        foreach (var country in countries)
+        {
+            countriesAndArmiesCount.Add(country, country.getArmiesCount());
+        }
+
+        return countriesAndArmiesCount;
     }
 }
