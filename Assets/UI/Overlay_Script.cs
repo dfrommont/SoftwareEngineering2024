@@ -17,11 +17,13 @@ public class Overlay_Script : MonoBehaviour
     private int highlighted = 0;
     private bool timerPaused = false;
     private float pausedTime = -1;
+    public GameInterface gameInterface;
 
     private void Start()
     {
         start = Time.time;
         InvokeRepeating("Timer", 0f, 1f);
+        gameInterface.DraftCountChanged += updateArmiesCount;
     }
 
     private void Timer()
@@ -63,21 +65,28 @@ public class Overlay_Script : MonoBehaviour
 
     public void updateTurnPhaseIndicator(TurnPhase currentPhase)
     {
-        draftSign.fontSize = 18;
-        attackSign.fontSize = 18;
-        fortifySign.fontSize = 18;
         switch (currentPhase) {
             case TurnPhase.Draft:
-                draftSign.fontSize = 25;
+                attackSign.SetText("Draft");
                 break;
             case TurnPhase.Attack:
-                attackSign.fontSize = 25;
+                attackSign.SetText("Attack");
+                fortifySign.SetText("");
                 break;
             case TurnPhase.Fortify:
-                fortifySign.fontSize = 25;
+                attackSign.SetText("Fortify");
+                fortifySign.SetText("");
                 break;
-            default:
+            case TurnPhase.Deploy:
+                attackSign.SetText("Deploy");
+                fortifySign.SetText("");
                 break;
         };
+    }
+
+    void updateArmiesCount(int newValue)
+    {
+        Debug.Log(newValue);
+        fortifySign.SetText(newValue.ToString());
     }
 }

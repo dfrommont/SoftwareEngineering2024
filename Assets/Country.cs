@@ -37,6 +37,11 @@ public class Country
         return true;
     }
 
+    public bool zeroArmies() {
+        armiesCount = 0;
+        return true;
+    }
+
     public bool removeArmies(int count) {
         armiesCount -= count;
         return true;
