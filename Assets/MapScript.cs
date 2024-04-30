@@ -21,7 +21,8 @@ public class MapScript : MonoBehaviour
 
     public event Action<int> CountryClick;
 
-    public void Start() {
+    public void Start()
+    {
         material = GetComponent<Renderer>().material;
 
         width = indexMap.width;
@@ -85,7 +86,9 @@ public class MapScript : MonoBehaviour
     {
         return Mathf.RoundToInt(color.r * 255);
     }
-    public void Update() {
+
+    private void Update()
+    {
         var newPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         newPosition.z = 0;
         int x = Mathf.RoundToInt((newPosition.x * width / 20) + (width/2));

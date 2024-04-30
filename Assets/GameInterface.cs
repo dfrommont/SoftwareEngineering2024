@@ -10,12 +10,15 @@ public class GameInterface: MonoBehaviour
     public event Action<TurnPhase> TurnPhaseChanged;
     public event Action<Player> CurrentPlayerChanged;
     public event Action<Player> PlayerAdded;
+    public event Action<int> ResetEvent;
+    public event Action<int> DraftCountChanged;
     public event Action CountryChanged;
-
     void Start(){
         gameManager.TurnPhaseChanged += turnPhaseChanged;
         gameManager.CurrentPlayerChanged += currentPlayerChanged;
         gameManager.PlayerAdded += playerAdded;
+        gameManager.ResetEvent += resetEvent;
+        gameManager.DraftCountChanged += draftCountChanged;
         gameManager.CountryChanged += countryChanged;
     }
 
@@ -59,6 +62,16 @@ public class GameInterface: MonoBehaviour
         }
     }
 
+    public bool battle(Country attacker, int attackRollCount, Country defender, int defendRollCount) {
+        switch (gameEnvironment)
+        {
+            case GameEnvironment.Local:
+                return gameManager.battle(attacker, attackRollCount, defender, defendRollCount);
+            default:
+                return false;
+        }
+    }
+
     public bool draft(Player player, int countryID, int amountToDraft)
     {
         switch (gameEnvironment)
@@ -87,7 +100,7 @@ public class GameInterface: MonoBehaviour
                 return false;
         }
     }
-
+    
     public List<Country> getCountries()
     {
         switch (gameEnvironment)
@@ -98,6 +111,28 @@ public class GameInterface: MonoBehaviour
                 return null;
         }
     }
+
+    public bool isOwnCountry(int countryID)
+    {
+        switch (gameEnvironment)
+        {
+            case GameEnvironment.Local:
+                return gameManager.isOwnCountry(countryID);
+            default:
+                return false;
+        }
+    }
+    public Country getCountry(int countryID)
+    {
+        switch (gameEnvironment)
+        {
+            case GameEnvironment.Local:
+                return gameManager.getCountry(countryID);
+            default:
+                return null;
+        }
+    }
+    
     public void turnPhaseChanged(TurnPhase a){
         Debug.Log(a);
         TurnPhaseChanged?.Invoke(a);
@@ -108,16 +143,30 @@ public class GameInterface: MonoBehaviour
         CurrentPlayerChanged?.Invoke(a);
         Debug.Log("PCGI");
     }
+
     public void playerAdded(Player a)
     {
         Debug.Log(a);
         PlayerAdded?.Invoke(a);
         Debug.Log("PAGI");
     }
+
     public void countryChanged()
-    {
-        CountryChanged?.Invoke();
-        Debug.Log("CCGI");
+        {
+            CountryChanged?.Invoke();
+            Debug.Log("CCGI");
+        }
+
+    public void resetEvent(int a){
+        Debug.Log(a);
+        ResetEvent?.Invoke(a);
+        Debug.Log("REGI");
+    }
+    
+    public void draftCountChanged(int a){
+        Debug.Log(a);
+        DraftCountChanged?.Invoke(a);
+        Debug.Log("DCCGI");
     }
 }
 

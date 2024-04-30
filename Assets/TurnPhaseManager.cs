@@ -25,7 +25,6 @@ public class TurnPhaseManager
     public event Action EnteredDraft;
     public event Action EnteredAttack;
     public event Action EnteredFortify;
-    public event Action EndedTurn;
     
 
     public void nextTurnPhase()
@@ -47,9 +46,7 @@ public class TurnPhaseManager
                 EnteredFortify?.Invoke();
                 break;
             case TurnPhase.Fortify:
-                EndedTurn?.Invoke();
                 currentPhase = TurnPhase.Draft;
-                EnteredDraft?.Invoke();
                 break;
         }
         PhaseChanged?.Invoke(currentPhase);
