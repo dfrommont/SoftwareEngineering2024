@@ -7,6 +7,7 @@ public class Player
 
     [SerializeField] private string name;
     private Color color;
+    private List<RiskCard> riskCardHand;
 
     public Player(string name, Color color = new Color())
     {
@@ -15,6 +16,17 @@ public class Player
         }
         this.name = name;
         this.color = color;
+        riskCardHand = new();
+    }
+    
+    public void addRiskCardToHand(RiskCard card)
+    {
+        riskCardHand.Add(card);
+    }
+
+    public void removeRiskCardFromHand(RiskCard card)
+    {
+        riskCardHand.Remove(card);
     }
 
     public string getName()
