@@ -47,7 +47,6 @@ public class TurnPhaseManager
                 break;
             case TurnPhase.Fortify:
                 currentPhase = TurnPhase.Draft;
-                EnteredDraft?.Invoke();
                 break;
         }
         PhaseChanged?.Invoke(currentPhase);

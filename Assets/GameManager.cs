@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour
     public event Action<TurnPhase> TurnPhaseChanged;
     public event Action<Player> CurrentPlayerChanged;
     public event Action<Player> PlayerAdded;
+    public event Action<int> ResetEvent;
+    public event Action<int> DraftCountChanged;
+    public event Action CountryChanged;
 
     private List<string> playerNames = new()
         { "Harold", "Horace", "Henry", "Hermine", "Hetty", "Harriet" };
@@ -35,6 +38,15 @@ public class GameManager : MonoBehaviour
     {
         turnPhaseStateMachine.PhaseChanged += turnPhaseChanged;
         initCountries();
+        Player p1 = new Player("Bob");
+        playerList.Enqueue(p1);
+        PlayerAdded?.Invoke(p1);
+        Player p2 = new Player("Kevin");
+        playerList.Enqueue(p2);
+        PlayerAdded?.Invoke(p2);
+        Player p3 = new Player("Stuart");
+        playerList.Enqueue(p3);
+        PlayerAdded?.Invoke(p3);
     }
 
     public bool startGame(){
@@ -68,6 +80,13 @@ public class GameManager : MonoBehaviour
 
     public bool nextPhase(){
         turnPhaseStateMachine.nextTurnPhase();
+        ResetEvent?.Invoke(0);
+        if (turnPhaseStateMachine.getTurnPhase()==TurnPhase.Draft)
+        {
+            nextPlayerTurn();
+            availableToDraft = calculateAvailableToDraft();
+            DraftCountChanged?.Invoke(availableToDraft);
+        }
         return true;
     }
 
@@ -75,15 +94,22 @@ public class GameManager : MonoBehaviour
         TurnPhaseChanged?.Invoke(turnPhase);
         Debug.Log("GM");
     }
+    
+    public void countryChanged()
+    {
+        CountryChanged?.Invoke();
+        Debug.Log("GM");
+    }
 
     public bool draft(Player player, int countryID, int amountToDraft)
     {
+        ResetEvent?.Invoke(0);
         Country draftToCountry = countries[countryID];
         if (turnPhaseStateMachine.getTurnPhase()!=TurnPhase.Draft)
         {
             throw new Exception("not in draft phase!");
         }
-        if (draftToCountry.getPlayer() != player)
+        if (draftToCountry.getPlayer() != currentPlayer)
         {
             throw new Exception("can't draft to country not owned by this player!");
         }
@@ -93,7 +119,12 @@ public class GameManager : MonoBehaviour
         }
         draftToCountry.addArmies(amountToDraft);
         availableToDraft -= amountToDraft;
-
+        if (availableToDraft == 0)
+        {
+            nextPhase();
+        }
+        DraftCountChanged?.Invoke(availableToDraft);
+        countryChanged();
         return true;
     }
     private int calculateAvailableToDraft()
@@ -121,7 +152,6 @@ public class GameManager : MonoBehaviour
                 availableToDraft += continent.getContinentBonus();
             }
         }
-        
         //ensure min of 3
         return Math.Max(3, amountAvailableToDraft);
 
@@ -129,6 +159,7 @@ public class GameManager : MonoBehaviour
 
     public bool deploy(Player player, int countryID)
     {
+        ResetEvent?.Invoke(0);
         Country deployToCountry = countries[countryID];
         if (turnPhaseStateMachine.getTurnPhase() != TurnPhase.Deploy)
         {
@@ -162,6 +193,7 @@ public class GameManager : MonoBehaviour
         {
             nextPhase();
         }
+        countryChanged();
         return true;
     }
     private int calculateArmiesToAllocate()
@@ -182,6 +214,9 @@ public class GameManager : MonoBehaviour
                 break;
             case >= 6: 
                 armiesToAllocate = 20;
+                break;
+            case 2:
+                armiesToAllocate = 15;
                 break;
             default:
                 throw new Exception("must have at least 3 players! number of players: "+ numberOfPlayers);
@@ -222,6 +257,7 @@ public class GameManager : MonoBehaviour
         // Passed all checks, so continue with movement
         origin.removeArmies(count);
         destination.addArmies(count);
+        countryChanged();
         return true;
     }
 
@@ -260,6 +296,16 @@ public class GameManager : MonoBehaviour
         CurrentPlayerChanged?.Invoke(currentPlayer);
     }
 
+    public bool isOwnCountry(int countryID)
+    {
+        return countries[countryID].getPlayer() == currentPlayer;
+    }
+
+    public Country getCountry(int countryID)
+    {
+        return countries[countryID];
+    }
+
     void initCountries(){
         string text = File.ReadAllText(@"./countries.json");
         JObject data = JObject.Parse(text);
@@ -281,6 +327,50 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public bool battle(Country attacker, int attackRollCount, Country defender, int defendRollCount) {
+
+        Random rnd = new Random();
+
+        List<int> attackRolls = new();
+        List<int> defendRolls = new();
+
+        for (int i = 0; i < attackRollCount; i++)
+        {
+            attackRolls.Add(rnd.Next(1,7));
+        }
+        for (int i = 0; i < defendRollCount; i++)
+        {
+            defendRolls.Add(rnd.Next(1,7));
+        }
+        attackRolls.Sort();
+        defendRolls.Sort();
+        attackRolls.Reverse();
+        defendRolls.Reverse();
+
+        int attackCount = 0;
+        int defendCount = 0;
+        for (int i = 0; i < Math.Min(attackRollCount, defendRollCount); i++)
+        {
+            if(attackRolls[i]>defendRolls[i]){
+                attackCount++;
+            } else {
+                defendCount++;
+            }
+        }
+
+        if(defender.getArmiesCount()==attackCount){
+            // Attacker gets country
+            defender.setPlayer(currentPlayer);
+            defender.zeroArmies();
+            defender.addArmies(attackRollCount);
+            attacker.removeArmies(attackRollCount);
+        } else {
+            // Decrement both countries
+            attacker.removeArmies(defendCount);
+            defender.removeArmies(attackCount);
+        }
+        return true;
+    }
     internal bool fortify(string player, Country origin, Country destination, int count)
     {
         throw new NotImplementedException();

@@ -19,6 +19,11 @@ public class UI_Manager : MonoBehaviour
     public NextStage_Script nextStage;
     public CardHolder_Script cardHolder;
     public MapScript map;
+    public DraftArmiesUIScript draftScreen;
+    public AttackUIScript attackScreen;
+    public TroopNumbers_Script troopNumbers;
+    
+    private bool _clickingActive = false;
 
     private TurnPhase turnPhase = TurnPhase.Deploy;
 
@@ -30,6 +35,8 @@ public class UI_Manager : MonoBehaviour
         map.CountryClick += countryClicked;
         overlay.updateTurnPhaseIndicator(TurnPhase.Deploy);
         gameInterface.TurnPhaseChanged += turnPhaseChanged;
+        gameInterface.ResetEvent += ResetEventHandler;
+        gameInterface.CountryChanged += updateTroopNum;
         
         troopMovement.toggle();
     }
@@ -88,20 +95,47 @@ public class UI_Manager : MonoBehaviour
 
     private void countryClicked(int country) {
         Debug.Log(turnPhase);
-        switch (turnPhase) {
-            case TurnPhase.Deploy:
-                Player player = new Player("Test");
-                gameInterface.deploy(player, country);
-                Debug.Log("test UI");
-                break;
-            case TurnPhase.Draft:
-            
-                break;
-            case TurnPhase.Attack:
+        if (_clickingActive)
+        {
+            switch (turnPhase)
+            {
+                case TurnPhase.Deploy:
+                    Player player = new Player("Test");
+                    _clickingActive = false;
+                    gameInterface.deploy(player, country);
+                    Debug.Log("test UI");
+                    
+                    break;
+                case TurnPhase.Draft:
+                    
+                    if (gameInterface.isOwnCountry(country))
+                    {
+                        _clickingActive = false;
+                        draftScreen.Show(country);
+                    }
+                    break;
+                case TurnPhase.Attack:
+                    if (originCountry == -1)
+                    {
+                        if (gameInterface.isOwnCountry(country))
+                        {
+                            originCountry = country;
+                        }
+                    }
+                    else
+                    {
+                        if (!gameInterface.isOwnCountry(country))
+                        {
+                            destinationCountry = country;
+                            _clickingActive = false;
+                            attackScreen.Show(originCountry, destinationCountry);
+                        }
+                    }
 
-                break;
-            case TurnPhase.Fortify:
-                break;
+                    break;
+                case TurnPhase.Fortify:
+                    break;
+            }
         }
     }
 
@@ -116,6 +150,22 @@ public class UI_Manager : MonoBehaviour
                 dialogBox.shortMessage(message, time); 
                 break;
 
+        }
+    }
+
+    void ResetEventHandler(int a)
+    {
+        _clickingActive = true;
+        originCountry = -1;
+        destinationCountry = -1;
+    }
+    
+    public void updateTroopNum()
+    {
+        List<Country> countriesList = gameInterface.getCountries();
+        foreach (Country country in countriesList)
+        {
+            troopNumbers.changeNumber(country.getName(), country.getArmiesCount());
         }
     }
 }

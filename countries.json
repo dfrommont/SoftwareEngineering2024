@@ -319,16 +319,16 @@
 
             ]
         },
-        "36": {
-            "id": 36,
+        "37": {
+            "id": 37,
             "display_name": "Ukraine",
             "connections": [
             	26, 31, 37, 1, 22, 35
 
             ]
         },
-        "37": {
-            "id": 37,
+        "36": {
+            "id": 36,
             "display_name": "Ural",
             "connections": [
             	36, 1, 7, 33
