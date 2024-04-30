@@ -35,6 +35,7 @@ public class MapScript : MonoBehaviour
         Debug.Log(countryTimes.Length);
         calculateColors();
         renderMap();
+        gameManager.CountryChanged += calculateColors;
         // material.SetTexture("_ColorMapTexture", indexMap);
     }
 

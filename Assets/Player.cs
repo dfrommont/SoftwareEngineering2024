@@ -21,6 +21,11 @@ public class Player
     {
         return name;
     }
+    
+    public int getCardCount()
+    {
+        return 5;
+    }
 
     public Color getColor()
     {
