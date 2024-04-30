@@ -8,6 +8,7 @@ public class Player
     [SerializeField] private string name;
     private Color color;
     private List<RiskCard> riskCardHand;
+    private bool isAIPlayer;
 
     public Player(string name, Color color = new Color())
     {
@@ -39,5 +40,15 @@ public class Player
     public Color getColor()
     {
         return color;
+    }
+
+    public void setIsAIPlayer(bool isAIPlayer)
+    {
+        this.isAIPlayer = isAIPlayer;
+    }
+
+    public bool getIsAIPlayer()
+    {
+        return isAIPlayer;
     }
 }

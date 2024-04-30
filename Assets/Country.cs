@@ -67,4 +67,9 @@ public class Country
             neighbours.Add(countries[c_id]);
         }
     }
+
+    public List<Country> getNeighbours()
+    {
+        return neighbours;
+    }
 }
