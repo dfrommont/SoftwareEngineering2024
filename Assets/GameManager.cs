@@ -8,7 +8,7 @@ using System.Linq;
 using System;
 using Random = System.Random;
 using NUnit.Framework.Constraints;
-
+using Unity.VisualScripting;
 
 
 public class GameManager : MonoBehaviour
@@ -600,19 +600,50 @@ public class GameManager : MonoBehaviour
         while (validAttackingCountries.Count > 0 && attacksSoFar < maxAttacks)
         {
             //choose an attacking country
-            
+            Country attackingCountry = getCountryWithMostArmies(validAttackingCountries);
             //choose a country to attack
-            
+            Country defendingCountry = getWeakestEnemyNeighbour(attackingCountry);
+            //decide how many dice to roll in the attack - this AI always attacks with full strength
+            int numDiceToRoll = attackingCountry.getArmiesCount() - 1;
             //make the attack
+            battle(attackingCountry, numDiceToRoll, defendingCountry, 2);
 
             //ensure loop conditions are up to date
             attacksSoFar++;
             validAttackingCountries = getValidAttackingCountries(getThisPlayerCountries());
         }
-        //get this players countries
-        //get enemy neighbours for countries
-        //get quantity and or strength of neighbours
-        //choose some battles to do
+        
+    }
+
+    private Country getWeakestEnemyNeighbour(Country attackingCountry)
+    {
+        //get a list of enemy neighbours of the attacking country
+        List<Country> enemyNeighbours = getEnemyNeighboursList(attackingCountry);
+        //get a dict of the enemy neighbours with their army strengths
+        Dictionary<Country,int> enemyNeighboursAndArmiesCount = getCountriesAndArmiesCount(enemyNeighbours);
+        //return the enemy neighbour with the weakest army
+        return enemyNeighboursAndArmiesCount.OrderBy(kvp => kvp.Value).FirstOrDefault().Key;
+    }
+
+    private List<Country> getEnemyNeighboursList(Country attackingCountry)
+    {
+        List<Country> enemyNeighbours = new List<Country>();
+        foreach (var neighbour in attackingCountry.getNeighbours())
+        {
+            if (neighbour.getPlayer() != currentPlayer)
+            {
+                enemyNeighbours.Add(neighbour);
+            }
+        }
+
+        return enemyNeighbours;
+    }
+
+    private Country getCountryWithMostArmies(List<Country> countries)
+    {
+        //gets the country with the greatest army count
+        Dictionary<Country,int> attackingCountriesAndArmiesCount = getCountriesAndArmiesCount(countries);
+        return attackingCountriesAndArmiesCount.OrderByDescending(kvp => kvp.Value).FirstOrDefault().Key;
     }
 
     private List<Country> getValidAttackingCountries(List<Country> countries)
@@ -641,12 +672,6 @@ public class GameManager : MonoBehaviour
 
     private void doAIFortifyPhase()
     {
-        //get valid countries to fortify from
-        List<Country> validFortifyFromCountries = getValidFortifyFromCountries();
-        //get this players countries and how many enemy neighbours they have
-        Dictionary<Country, int> thisPlayerCountriesAndEnemyNeighbours =
-            getCountriesAndEnemyNeighbours(getThisPlayerCountries());
-
         //choose a country to fortify from
         Country chosenFortifyFromCountry = getThisPlayerLeastSurroundedCountry(getValidFortifyFromCountries());
         //choose an amount of troops to fortify
@@ -683,16 +708,18 @@ public class GameManager : MonoBehaviour
 
     private Country getThisPlayerLeastSurroundedCountry(List<Country> countries)
     {
+        //important note - this method needs to be passed an appropriate list of this player's countries
         Dictionary<Country, int> thisPlayerCountriesAndEnemyNeighbours =
-            getCountriesAndEnemyNeighbours(getThisPlayerCountries());
+            getCountriesAndEnemyNeighbours(countries);
         //return the country with the lowest number of enemy neighbours
         return thisPlayerCountriesAndEnemyNeighbours.OrderBy(kvp => kvp.Value).FirstOrDefault().Key;
     }
 
     private Country getThisPlayerMostSurroundedCountry(List<Country> countries)
     {
+        //important note - this method needs to be passed an appropriate list of this player's countries
         Dictionary<Country, int> thisPlayerCountriesAndEnemyNeighbours =
-            getCountriesAndEnemyNeighbours(getThisPlayerCountries());
+            getCountriesAndEnemyNeighbours(countries);
         //return the country with the highest number of enemy neighbours
         return thisPlayerCountriesAndEnemyNeighbours.OrderByDescending(kvp => kvp.Value).FirstOrDefault().Key;
     }
