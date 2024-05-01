@@ -40,6 +40,11 @@ public class Player
         return 5;
     }
 
+    public List<RiskCard> getPlayerHand()
+    {
+        return riskCardHand;
+    }
+
     public Color getColor()
     {
         return color;
