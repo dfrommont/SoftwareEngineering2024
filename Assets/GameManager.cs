@@ -606,7 +606,7 @@ public class GameManager : MonoBehaviour
             //decide how many dice to roll in the attack - this AI always attacks with full strength
             int numDiceToRoll = attackingCountry.getArmiesCount() - 1;
             //make the attack
-            battle(attackingCountry, numDiceToRoll, defendingCountry, 2);
+            battle(attackingCountry, numDiceToRoll, defendingCountry, 1);
 
             //ensure loop conditions are up to date
             attacksSoFar++;
