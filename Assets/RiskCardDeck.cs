@@ -57,8 +57,8 @@ public class RiskCardDeck
         cards.Add(new RiskCard(RiskCardType.Cavalry, 40));
         cards.Add(new RiskCard(RiskCardType.Artillery, 41));
         cards.Add(new RiskCard(RiskCardType.Cavalry, 42));
-        
-        
+
+
     }
 
     public void Shuffle()
@@ -73,6 +73,7 @@ public class RiskCardDeck
         {
             throw new InvalidOperationException("The deck is empty!");
         }
+
         RiskCard card = cards.First();
         cards.Remove(card);
         return card;

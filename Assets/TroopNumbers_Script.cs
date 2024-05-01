@@ -53,7 +53,8 @@ public class TroopNumbers_Script : MonoBehaviour
     void Start()
     {
         country_dict = new Dictionary<string, TMP_Text>() {
-            {"Afghanastan", afghanastan},
+            {"Afghanistan", afghanastan},
+            {"Alaska", alaska},
             {"Alberta", alberta},
             {"Argentina", argentina},
             {"Brazil", brazil},
@@ -77,7 +78,7 @@ public class TroopNumbers_Script : MonoBehaviour
             {"Mongolia", mongolia},
             {"New Guinea", newGuinea},
             {"North Africa", northAfrica},
-            {"NorthernEurope", northernEurope},
+            {"Northern Europe", northernEurope},
             {"Northwest Territor", northwestTerritor},
             {"Ontario", ontario},
             {"Peru", peru},

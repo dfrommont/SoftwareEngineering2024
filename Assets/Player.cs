@@ -19,7 +19,7 @@ public class Player
         this.color = color;
         riskCardHand = new();
     }
-
+    
     public void addRiskCardToHand(RiskCard card)
     {
         riskCardHand.Add(card);
@@ -30,11 +30,14 @@ public class Player
         riskCardHand.Remove(card);
     }
 
-
-
     public string getName()
     {
         return name;
+    }
+    
+    public int getCardCount()
+    {
+        return 5;
     }
 
     public Color getColor()

@@ -27,7 +27,6 @@ public class SetupScript : MonoBehaviour
 
         add_player_button.onClick.AddListener(addPlayerClick);
         start_game_button.onClick.AddListener(startGameClick);
-
         gameInterface.PlayerAdded += playerAdded;
         gameInterface.TurnPhaseChanged += turnPhaseChanged;
     }
