@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
         turnPhaseStateMachine.PhaseChanged += turnPhaseChanged;
         turnPhaseStateMachine.EndedTurn += endOfTurnActions;
         CurrentPlayerChanged += onPlayerChangeAIDeployHandler;
+        CurrentPlayerChanged += onPlayerChangeAutoTradeCardsIn;
         initCountries();
         Player p1 = new Player("Bob");
         playerList.Enqueue(p1);
@@ -417,6 +418,7 @@ public class GameManager : MonoBehaviour
             doAiDeploy();
         }
     }
+    
     public bool isOwnCountry(int countryID)
     {
         return countries[countryID].getPlayer() == currentPlayer;
@@ -733,5 +735,20 @@ public class GameManager : MonoBehaviour
         }
 
         return countriesAndArmiesCount;
+    }
+    public int getDefenceDiceToRoll(Country defendingCountry)
+    {
+        return Math.Min(2, defendingCountry.getArmiesCount());
+    }
+    private void onPlayerChangeAutoTradeCardsIn(Player player)
+    {
+        if (turnPhaseStateMachine.getTurnPhase()!=TurnPhase.Draft)
+        {
+            throw new Exception("can't trade in cards, not in draft phase!");
+        }
+
+        List<RiskCard> currentPlayerHand = currentPlayer.getPlayerHand();
+        //find a valid trade and make it
+        
     }
 }
