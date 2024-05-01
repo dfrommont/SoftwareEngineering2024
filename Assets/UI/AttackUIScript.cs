@@ -37,13 +37,24 @@ public class AttackUIScript : MonoBehaviour
         _destinationCountry = gameInterface.getCountry(destination);
         attackCountry.text = _originCountry.getName();
         defendCountry.text = _destinationCountry.getName();
+
+        if (gameInterface.getCountry(destination).getPlayer().getIsAIPlayer())
+        {
+            defendInputField.text = gameInterface.getDefenceDiceToRoll(gameInterface.getCountry(destination)).ToString();
+            defendInputField.DeactivateInputField(false);
+        }
+        else
+        {
+            defendInputField.text = "";
+            defendInputField.DeactivateInputField(true);
+        }
         root.SetActive(true);
     }
 
     private void submit()
     {
         int attackRolls = int.Parse(attackInputField.text);
-        int defendRolls = int.Parse(attackInputField.text);
+        int defendRolls = int.Parse(defendInputField.text);
         if (attackRolls > 3)
         {
             Debug.Log("Attack rolls must not exceed 3");

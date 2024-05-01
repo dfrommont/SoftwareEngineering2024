@@ -132,6 +132,17 @@ public class GameInterface: MonoBehaviour
                 return null;
         }
     }
+
+    public int getDefenceDiceToRoll(Country defendingCountry)
+    {
+        switch (gameEnvironment)
+        {
+            case GameEnvironment.Local:
+                return gameManager.getDefenceDiceToRoll(defendingCountry);
+            default:
+                return -1;
+        }
+    }
     
     public void turnPhaseChanged(TurnPhase a){
         Debug.Log(a);

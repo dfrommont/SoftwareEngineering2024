@@ -37,7 +37,7 @@ public class Player
     
     public int getCardCount()
     {
-        return 5;
+        return riskCardHand.Count;
     }
 
     public List<RiskCard> getPlayerHand()
