@@ -734,4 +734,8 @@ public class GameManager : MonoBehaviour
 
         return countriesAndArmiesCount;
     }
+    public int getDefenceDiceToRoll(Country defendingCountry)
+    {
+        return Math.Min(2, defendingCountry.getArmiesCount());
+    }
 }
