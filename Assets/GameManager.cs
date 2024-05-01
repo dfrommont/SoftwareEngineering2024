@@ -749,6 +749,51 @@ public class GameManager : MonoBehaviour
 
         List<RiskCard> currentPlayerHand = currentPlayer.getPlayerHand();
         //find a valid trade and make it
-        
+        if (currentPlayerHand.Count >2)
+        {
+            //get the first unique set of 3 cards that is a valid set to trade in
+            List<RiskCard> cardsToTradeIn = GetUniqueCombinations(currentPlayerHand).FirstOrDefault(item => isValidCardTradeIn(item));
+            if (cardsToTradeIn != null)
+            {
+                tradeInCards(cardsToTradeIn);
+            }
+            else
+            {
+                Console.Out.WriteLine("No valid card sets to trade in this turn.");
+            }
+
+        }
+        else
+        {
+            Console.Out.WriteLine("player hand too small to trade in cards");
+        }
     }
+
+    private List<List<RiskCard>> GetUniqueCombinations(List<RiskCard> playerCards)
+    {
+        List<List<RiskCard>> combinations = new List<List<RiskCard>>();
+
+        // Generate all unique combinations of three cards
+        for (int i = 0; i < playerCards.Count - 2; i++)
+        {
+            for (int j = i + 1; j < playerCards.Count - 1; j++)
+            {
+                for (int k = j + 1; k < playerCards.Count; k++)
+                {
+                    List<RiskCard> combination = new List<RiskCard>
+                    {
+                        playerCards[i],
+                        playerCards[j],
+                        playerCards[k]
+                    };
+
+                    combinations.Add(combination);
+                }
+            }
+        }
+
+        return combinations;
+    }
+    
+
 }
