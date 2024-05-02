@@ -1009,7 +1009,7 @@ public class GameManager : MonoBehaviour
             //do fortify if 2 different countries have been chosen as source and dest candidates
             if (chosenFortifyFromCountry != chosenFortifyToCountry)
             {
-                fortify(currentPlayer, chosenFortifyFromCountry, chosenFortifyToCountry, amountToFortify);
+                Fortify(currentPlayer, chosenFortifyFromCountry, chosenFortifyToCountry, amountToFortify);
             }
         }
         CompletedPhase();
