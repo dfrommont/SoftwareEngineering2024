@@ -66,15 +66,15 @@ public class Country
     }
 
     public void initNeighbours(Dictionary<int, Country> countries) {
-        Debug.Log(connections);
+        // Debug.Log(connections);
         foreach (var c_id in connections)
         {
             Debug.Log(getID());
             Debug.Log(c_id);
             neighbours.Add(countries[c_id]);
         }
-        Debug.Log(getName());
-        Debug.Log(connections.Count);
+        // Debug.Log(getName());
+        // Debug.Log(connections.Count);
     }
 
     public List<Country> getNeighbours()

@@ -66,7 +66,7 @@ public class GameInterface: MonoBehaviour
         switch (gameEnvironment)
         {
             case GameEnvironment.Local:
-                return gameManager.fortify(player, origin, destination, count);
+                return gameManager.Fortify(player, origin, destination, count);
             default:
                 return false;
         }
@@ -76,7 +76,7 @@ public class GameInterface: MonoBehaviour
         switch (gameEnvironment)
         {
             case GameEnvironment.Local:
-                return gameManager.battle(attacker, attackRollCount, defender, defendRollCount);
+                return gameManager.Battle(attacker, attackRollCount, defender, defendRollCount);
             default:
                 return false;
         }
@@ -87,7 +87,7 @@ public class GameInterface: MonoBehaviour
         switch (gameEnvironment)
         {
             case GameEnvironment.Local:
-                return gameManager.draft(player, countryID, amountToDraft);
+                return gameManager.Draft(player, countryID, amountToDraft);
             default:
                 return false;
         }
@@ -96,7 +96,7 @@ public class GameInterface: MonoBehaviour
         switch (gameEnvironment)
         {
             case GameEnvironment.Local:
-                return gameManager.deploy(player, countryID);
+                return gameManager.Deploy(player, countryID);
             default:
                 return false;
         }
