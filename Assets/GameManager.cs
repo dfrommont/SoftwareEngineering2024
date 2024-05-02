@@ -639,6 +639,7 @@ public class GameManager : MonoBehaviour
             defender.zeroArmies();
             defender.addArmies(attackRollCount);
             attacker.removeArmies(attackRollCount);
+            anyCountryCapturedThisTurn = true;
         } else {
             // Decrement both countries
             attacker.removeArmies(defendCount);
