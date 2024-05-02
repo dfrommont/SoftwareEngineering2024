@@ -765,6 +765,7 @@ public class GameManager : MonoBehaviour
             defender.zeroArmies();
             defender.addArmies(attackRollCount);
             attacker.removeArmies(attackRollCount);
+            anyCountryCapturedThisTurn = true;
         } else {
             // Decrement both countries
             attacker.removeArmies(defendCount);
@@ -995,19 +996,21 @@ public class GameManager : MonoBehaviour
     {
         //choose a country to fortify from
         Country chosenFortifyFromCountry = getThisPlayerLeastSurroundedCountry(getValidFortifyFromCountries());
-        //choose an amount of troops to fortify
-        int maxFortifyAmount = chosenFortifyFromCountry.getArmiesCount() - 1;
-        Random rnd = new Random();
-        int amountToFortify = rnd.Next(1, maxFortifyAmount);
-
-        //choose a country to fortify to
-        Country chosenFortifyToCountry = getThisPlayerMostSurroundedCountry(getThisPlayerCountries());
-
-
-        //do fortify if 2 different countries have been chosen as source and dest candidates
-        if (chosenFortifyFromCountry != chosenFortifyToCountry)
+        if (chosenFortifyFromCountry !=null)
         {
-            Fortify(currentPlayer, chosenFortifyFromCountry, chosenFortifyToCountry, amountToFortify);
+            //choose an amount of troops to fortify
+            int maxFortifyAmount = chosenFortifyFromCountry.getArmiesCount() - 1;
+            Random rnd = new Random();
+            int amountToFortify = rnd.Next(1, maxFortifyAmount);
+
+            //choose a country to fortify to
+            Country chosenFortifyToCountry = getThisPlayerMostSurroundedCountry(getThisPlayerCountries());
+
+            //do fortify if 2 different countries have been chosen as source and dest candidates
+            if (chosenFortifyFromCountry != chosenFortifyToCountry)
+            {
+                fortify(currentPlayer, chosenFortifyFromCountry, chosenFortifyToCountry, amountToFortify);
+            }
         }
         CompletedPhase();
     }
