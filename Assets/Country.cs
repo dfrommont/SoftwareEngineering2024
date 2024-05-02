@@ -60,7 +60,10 @@ public class Country
     }
 
     public bool isNeighbour(Country country) {
-        return neighbours.Contains(country);
+        Debug.Log("isNeigbour");
+        Debug.Log(neighbours);
+        Debug.Log(neighbours.Contains(country));
+        return true ;
     }
 
     public void initNeighbours(Dictionary<int, Country> countries) {

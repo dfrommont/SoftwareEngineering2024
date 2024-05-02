@@ -8,7 +8,8 @@ public class Player
     [SerializeField] private string name;
     private Color color;
     private List<RiskCard> riskCardHand;
-    private bool isAIPlayer;
+    private bool isAIPlayer = false;
+    private bool _dead = false;
 
     public Player(string name, Color color = new Color())
     {
@@ -58,5 +59,14 @@ public class Player
     public bool getIsAIPlayer()
     {
         return isAIPlayer;
+    }
+
+    public void setDead()
+    {
+        _dead = true;
+    }
+    public bool IsDead()
+    {
+        return _dead;
     }
 }

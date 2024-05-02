@@ -9,6 +9,7 @@ public class SetupScript : MonoBehaviour
     public TMP_InputField player_field;
     public GameInterface gameInterface;
     public Button add_player_button;
+    public Button add_ai_player_button;
     public Button start_game_button;
     public GameObject player_card_prefab;
     public Transform player_card_parent;
@@ -26,6 +27,8 @@ public class SetupScript : MonoBehaviour
         roll_buttons_grand_parent.SetActive(false);
 
         add_player_button.onClick.AddListener(addPlayerClick);
+        add_ai_player_button.onClick.AddListener(addAiPlayerClick);
+        
         start_game_button.onClick.AddListener(startGameClick);
         gameInterface.PlayerAdded += playerAdded;
         gameInterface.TurnPhaseChanged += turnPhaseChanged;
@@ -37,6 +40,12 @@ public class SetupScript : MonoBehaviour
 
     void addPlayerClick(){
         if(gameInterface.createPlayer(player_field.text)){
+            player_field.text = "";
+        }
+    }
+    
+    void addAiPlayerClick(){
+        if(gameInterface.createAiPlayer()){
             player_field.text = "";
         }
     }

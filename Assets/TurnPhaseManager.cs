@@ -54,6 +54,22 @@ public class TurnPhaseManager
         PhaseChanged?.Invoke(currentPhase);
     }
 
+    public TurnPhase getNextTurnPhase()
+    {
+        switch (currentPhase) {
+            case TurnPhase.Setup:
+                return TurnPhase.Deploy;
+            case TurnPhase.Deploy:
+                return TurnPhase.Draft;
+            case TurnPhase.Draft:
+                return TurnPhase.Attack;
+            case TurnPhase.Attack:
+                return TurnPhase.Fortify;
+            default: //case TurnPhase.Fortify:
+                return TurnPhase.Draft;
+        };
+    }
+
     public TurnPhase getTurnPhase()
     {
         return currentPhase;

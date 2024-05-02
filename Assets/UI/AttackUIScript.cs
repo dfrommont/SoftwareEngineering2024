@@ -80,7 +80,7 @@ public class AttackUIScript : MonoBehaviour
             Debug.Log("Defend rolls must not be below 1");
             return;
         }
-        if (defendRolls >= _originCountry.getArmiesCount())
+        if (defendRolls > _destinationCountry.getArmiesCount())
         {
             Debug.Log("Defend rolls must not exceed your army count");
             return;

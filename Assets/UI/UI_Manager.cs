@@ -78,7 +78,10 @@ public class UI_Manager : MonoBehaviour
     }
 
     public void nextPhase() {
-        gameInterface.nextPhase();
+        if (gameInterface.GetTurnPhase() == TurnPhase.Draft || gameInterface.GetTurnPhase() == TurnPhase.Attack || gameInterface.GetTurnPhase() == TurnPhase.Fortify)
+        {
+            gameInterface.nextPhase();
+        }
     }
 
     private void turnPhaseChanged(TurnPhase turnPhase) {

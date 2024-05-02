@@ -26,7 +26,8 @@ public class GameInterface: MonoBehaviour
         switch (gameEnvironment)
         {
             case GameEnvironment.Local:
-                return gameManager.nextPhase();
+                gameManager.CompletedPhase();
+                return true;
             default:
                 return false;
         }
@@ -37,6 +38,15 @@ public class GameInterface: MonoBehaviour
         {
             case GameEnvironment.Local:
                 return gameManager.createPlayer(name);
+            default:
+                return false;
+        }
+    }
+    public bool createAiPlayer(){
+        switch (gameEnvironment)
+        {
+            case GameEnvironment.Local:
+                return gameManager.createAiPlayer();
             default:
                 return false;
         }
@@ -141,6 +151,17 @@ public class GameInterface: MonoBehaviour
                 return gameManager.getDefenceDiceToRoll(defendingCountry);
             default:
                 return -1;
+        }
+    }
+
+    public TurnPhase GetTurnPhase()
+    {
+        switch (gameEnvironment)
+        {
+            case GameEnvironment.Local:
+                return gameManager.GetTurnPhase();
+            default:
+                return TurnPhase.Setup;
         }
     }
     
