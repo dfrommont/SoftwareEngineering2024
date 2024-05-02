@@ -13,24 +13,40 @@ using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
-    private Dictionary<int, Country> countries;
-    private Dictionary<int, Continent> continents;
+    private Dictionary<int, Country> _countries;
+    private Dictionary<int, Continent> _continents;
+    
     // Stores the number of armies that a player has left to draft in their draft phase
     private int availableToDraft = 0;
+    
     private int numberOfPlayers = 3;
+    
+    // Currently active player
     private Player currentPlayer;
-    private Queue<Player> _originalPlayerList = new();
+    
+    // Queue of players - Used for the turn system
     private Queue<Player> playerList = new();
-    private TestSubscriber _testSubscriber = new TestSubscriber();
+    
+    // List of unoccupied countries - Used for the initial setup phase
     private List<Country> unoccupiedCountries = new();
+    
+    // Card deck
     private RiskCardDeck riskCardDeck;
+    
     private int setsOfRiskCardsTradedIn;
     private bool anyCountryCapturedThisTurn;
+    
+    // Used for 2 player risk - Where players can place 2 armies at a time, and 1 neutral army
     private int currentPlayerTurnDeployCount = 0;
     private int currentPlayerTurnDeployMax = 1;
     private bool hasPlacedNeutral = false;
+    
     private bool _hasWon = false;
+    
+    // Neutral player - Acts as a standard player
     private Player neutral = new Player("Neutral", Color.gray);
+
+    private List<Color> _playerColours = new();
     public event Action<TurnPhase> TurnPhaseChanged;
     public event Action<Player> CurrentPlayerChanged;
     public event Action<Player> PlayerAdded;
@@ -38,37 +54,39 @@ public class GameManager : MonoBehaviour
     public event Action<int> DraftCountChanged;
     public event Action CountryChanged;
 
-    private List<string> playerNames = new()
-        { "Harold", "Horace", "Henry", "Hermine", "Hetty", "Harriet" };
+    private TurnPhaseManager _turnPhaseStateMachine = new();
 
-    private TurnPhaseManager turnPhaseStateMachine = new();
-
+    /// <summary>
+    /// Game Manager Start function
+    /// - initialises countries
+    /// - Attaches event listeners
+    /// </summary>
     void Start()
     {
-        turnPhaseStateMachine.PhaseChanged += turnPhaseChanged;
-        turnPhaseStateMachine.EndedTurn += endOfTurnActions;
+        _turnPhaseStateMachine.PhaseChanged += turnPhaseChanged;
+        _turnPhaseStateMachine.EndedTurn += endOfTurnActions;
         CurrentPlayerChanged += onPlayerChangeAutoTradeCardsIn;
         initCountries();
-
-        Debug.Log(countries[1].isNeighbour(countries[36]));
-        Debug.Log(countries[1].isNeighbour(countries[37]));
-        Debug.Log(countries[1].isNeighbour(countries[7]));
-        Debug.Log(countries[1].isNeighbour(countries[3]));
         
-        // Player p1 = new Player("Bob");
-        // playerList.Enqueue(p1);
-        // PlayerAdded?.Invoke(p1);
-        // Player p2 = new Player("Kevin");
-        // playerList.Enqueue(p2);
-        // PlayerAdded?.Invoke(p2);
-        // Player p3 = new Player("Stuart");
-        // playerList.Enqueue(p3);
-        // PlayerAdded?.Invoke(p3);
+        _playerColours.Add(new Color((255 / 255f), (195 / 255f), (10 / 255f)));
+        _playerColours.Add(new Color((12 / 255f), (123 / 255f), (220 / 255f)));
+        _playerColours.Add(new Color((106 / 255f), (183 / 255f), (106 / 255f)));
+        _playerColours.Add(new Color((220 / 255f), (50 / 255f), (32 / 255f)));
+        _playerColours.Add(new Color((211 / 255f), (95 / 255f), (183 / 255f)));
+        _playerColours.Add(new Color((64 / 255f), (30 / 255f), (4 / 255f)));
     }
 
+    /// <summary>
+    /// Starts the game after all players have been added
+    /// - Called by UI
+    /// - Validates player count
+    /// - Initialises cards
+    /// - Sets up 2 player risk
+    /// </summary>
+    /// <returns>true if passes validation</returns>
     public bool startGame()
     {
-        _originalPlayerList = playerList;
+        numberOfPlayers = playerList.Count;
         // Validate game is in a valid state
         if (playerList.Count < 2)
         {
@@ -102,7 +120,7 @@ public class GameManager : MonoBehaviour
 
             currentPlayerTurnDeployMax = 2;
             
-            foreach (var country in countries)
+            foreach (var country in _countries)
             {
                 bool found = false;
                 Country c = country.Value;
@@ -149,45 +167,56 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Moves from one phase to another, whether that be from setup to deploy, deploy to draft, or fortify to draft etc.
+    /// Sets up variables that are needed for the next phase, such as available to draft.
+    /// </summary>
     public void CompletedPhase()
     {
         Debug.Log(availableToDraft);
         // Switch to next phase
-        switch (turnPhaseStateMachine.getTurnPhase())
+        switch (_turnPhaseStateMachine.getTurnPhase())
         {
             case TurnPhase.Setup:
+                // Move from setup to Deploy
+                
                 nextPhase();
-                unoccupiedCountries = countries.Values.ToList();
+                unoccupiedCountries = _countries.Values.ToList();
                 availableToDraft = calculateArmiesToAllocate();
                 break;
             case TurnPhase.Deploy:
+                // Move from Deploy to Draft if there are no more available to draft.
                 if (availableToDraft == 0)
                 {
                     nextPhase();
                 }
+                // Move to next player
                 nextPlayerTurn();
                 break;
             case TurnPhase.Draft:
+                // Move from Draft to Attack
                 nextPhase();
                 break;
             case TurnPhase.Attack:
+                // Move from Attack to Fortify
                 nextPhase();
                 break;
             case TurnPhase.Fortify:
+                // Move from Fortify to Draft, and move to next player
                 nextPhase();
                 nextPlayerTurn();
                 break;
         }
         // Setup next phase
-        switch (turnPhaseStateMachine.getTurnPhase())
+        switch (_turnPhaseStateMachine.getTurnPhase())
         {
             case TurnPhase.Draft:
                 availableToDraft = calculateAvailableToDraft();
                 DraftCountChanged?.Invoke(availableToDraft);
                 break;
         }
-        // Start next turn
-        switch (turnPhaseStateMachine.getTurnPhase())
+        // Start next turn, and run Ai code
+        switch (_turnPhaseStateMachine.getTurnPhase())
         {
             case TurnPhase.Deploy:
                 if (currentPlayer.getIsAIPlayer())
@@ -216,6 +245,9 @@ public class GameManager : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// If any country is captured in a round, then a risk card is given to the current player
+    /// </summary>
     private void endOfTurnActions()
     {
         if (anyCountryCapturedThisTurn)
@@ -226,11 +258,12 @@ public class GameManager : MonoBehaviour
         anyCountryCapturedThisTurn = false;
     }
     
-
-
-
-
-
+    /// <summary>
+    /// Trade in a collection of cards in return for more troops
+    /// </summary>
+    /// <param name="cardsToTradeIn">A list of cards to be traded</param>
+    /// <returns>true if successful</returns>
+    /// <exception cref="Exception">If trade in is not a valid collection</exception>
     public bool tradeInCards(List<RiskCard> cardsToTradeIn)
     {
         if (!isValidCardTradeIn(cardsToTradeIn))
@@ -246,6 +279,11 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Calculate how many armies should be returned from a given set of cards being traded in
+    /// </summary>
+    /// <param name="cardsToTradeIn">The list of cards to be traded in</param>
+    /// <returns>The number of armies to be given in return for cards</returns>
     private int calculateArmiesFromTradedCards(List<RiskCard> cardsToTradeIn)
     {
         int amount = 0;
@@ -263,7 +301,7 @@ public class GameManager : MonoBehaviour
         foreach (var card in cardsToTradeIn)
         {
             int cardCountryID = card.getCountryID();
-            if (countries[cardCountryID].getPlayer() == currentPlayer)
+            if (_countries[cardCountryID].getPlayer() == currentPlayer)
             {
                 amount += 2;
             }
@@ -274,6 +312,11 @@ public class GameManager : MonoBehaviour
         return amount;
     }
 
+    /// <summary>
+    /// Checks if the combination of cards to be traded is valid
+    /// </summary>
+    /// <param name="cards">List of cards to be traded</param>
+    /// <returns>true if valid</returns>
     private bool isValidCardTradeIn(List<RiskCard> cards)
     {
         if (cards.Count != 3)
@@ -300,37 +343,64 @@ public class GameManager : MonoBehaviour
         //otherwise
         return false;
     }
+    
+    /// <summary>
+    /// Get a list of all territories
+    /// </summary>
+    /// <returns>List of all territories</returns>
     public List<Country> getCountries(){
         List<Country> return_countries = new List<Country>();
-        foreach(KeyValuePair<int, Country> country in countries)
+        foreach(KeyValuePair<int, Country> country in _countries)
         {
             return_countries.Add(country.Value);
         }
         return return_countries;
     }
     
+    /// <summary>
+    /// Moves to the next phase of play e.g. Draft -> Attack etc.
+    /// </summary>
+    /// <returns>True if successful</returns>
     public bool nextPhase(){
-        turnPhaseStateMachine.nextTurnPhase();
+        _turnPhaseStateMachine.nextTurnPhase();
         ResetEvent?.Invoke(0);
         return true;
     }
     
+    /// <summary>
+    /// Event forwarding for turnPhaseChanged from turnPhaseManager
+    /// - Turn Phase Changed is invoked every time that the turn phase changes
+    /// </summary>
+    /// <param name="turnPhase">The new turn phase</param>
     public void turnPhaseChanged(TurnPhase turnPhase)
     {
         TurnPhaseChanged?.Invoke(turnPhase);
         //Debug.Log("GM");
     }
-    public void countryChanged()
+    
+    /// <summary>
+    /// Invokes the CountryChanged event
+    /// - Used in UI for re-rendering the owner of a territory
+    /// </summary>
+    private void countryChanged()
     {
         CountryChanged?.Invoke();
         //Debug.Log("GM");
     }
 
-    public bool draft(Player player, int countryID, int amountToDraft)
+    /// <summary>
+    /// The Draft game mechanic of risk
+    /// </summary>
+    /// <param name="player">unused (For future networking)</param>
+    /// <param name="countryID">The countryID to draft armies to</param>
+    /// <param name="amountToDraft">The number of armies to draft</param>
+    /// <returns>true if successful</returns>
+    /// <exception cref="Exception"></exception>
+    public bool Draft(Player player, int countryID, int amountToDraft)
     {
         ResetEvent?.Invoke(0);
-        Country draftToCountry = countries[countryID];
-        if (turnPhaseStateMachine.getTurnPhase()!=TurnPhase.Draft)
+        Country draftToCountry = _countries[countryID];
+        if (_turnPhaseStateMachine.getTurnPhase()!=TurnPhase.Draft)
         {
             throw new Exception("not in draft phase!");
         }
@@ -348,16 +418,21 @@ public class GameManager : MonoBehaviour
         countryChanged();
         return true;
     }
+    /// <summary>
+    /// Calculates the number of armies in which a player can draft
+    /// </summary>
+    /// <returns>Number of armies that can be drafted</returns>
+    /// <exception cref="Exception"></exception>
     private int calculateAvailableToDraft()
     {
-        if (turnPhaseStateMachine.getTurnPhase()!=TurnPhase.Draft)
+        if (_turnPhaseStateMachine.getTurnPhase()!=TurnPhase.Draft)
         {
             throw new Exception("not in draft phase!");
         }
         int amountAvailableToDraft = 0;
         //calculate territory bonus
         int territoriesOwnedByCurrentPlayer = 0;
-        foreach (var country in countries.Values)
+        foreach (var country in _countries.Values)
         {
             if (country.getPlayer()==currentPlayer)
             {
@@ -366,7 +441,7 @@ public class GameManager : MonoBehaviour
         }
         amountAvailableToDraft += territoriesOwnedByCurrentPlayer / 3;
         //calculate continent bonus
-        foreach (var continent in continents.Values)
+        foreach (var continent in _continents.Values)
         {
             if (continent.isAllOwnedByOnePlayer() && continent.getPlayer() == currentPlayer)
             {
@@ -378,11 +453,19 @@ public class GameManager : MonoBehaviour
         return Math.Max(3, amountAvailableToDraft);
 
     }
-    public bool deploy(Player player, int countryID)
+    
+    /// <summary>
+    /// The deploy phase of the game, where players initially place their armies
+    /// </summary>
+    /// <param name="player">unused (For future networking)</param>
+    /// <param name="countryID">The countryID to deploy troops to</param>
+    /// <returns>True if successful</returns>
+    /// <exception cref="Exception"></exception>
+    public bool Deploy(Player player, int countryID)
     {
         ResetEvent?.Invoke(0);
-        Country deployToCountry = countries[countryID];
-        if (turnPhaseStateMachine.getTurnPhase() != TurnPhase.Deploy)
+        Country deployToCountry = _countries[countryID];
+        if (_turnPhaseStateMachine.getTurnPhase() != TurnPhase.Deploy)
         {
             throw new Exception("not in initial setup phase!");
         }
@@ -408,15 +491,15 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        // Sets the territory to the current player, unless it's neutral.
         if (deployToCountry.getPlayer() != neutral)
         {
             deployToCountry.setPlayer(currentPlayer);
             currentPlayerTurnDeployCount++;
         }
-        //Debug.Log("DEPLOYCOUNTS");
-        //Debug.Log(currentPlayerTurnDeployCount);
-        //Debug.Log(currentPlayerTurnDeployMax);
 
+        // Increments the number of armies on a territory, unless they have reached their max number of deployments
+        // Max number of deployments is 1 for 3-6 players, 2 + 1 neutral army for 2 player mode.
         if (currentPlayerTurnDeployCount <= currentPlayerTurnDeployMax || (deployToCountry.getPlayer() == neutral && !hasPlacedNeutral))
         {
             deployToCountry.addArmies(1);
@@ -429,12 +512,13 @@ public class GameManager : MonoBehaviour
             hasPlacedNeutral = true;
         }
 
+        // Prevents moving to the next stage unless all deplyments needed are made.
         if (currentPlayerTurnDeployCount < currentPlayerTurnDeployMax || (!hasPlacedNeutral && currentPlayerTurnDeployMax==2))
         {
-            //Debug.Log("F");
             return true;
         }
         
+        // Reset validation variables
         currentPlayerTurnDeployCount = 0;
         hasPlacedNeutral = false;
 
@@ -442,6 +526,14 @@ public class GameManager : MonoBehaviour
         CompletedPhase();
         return true;
     }
+    
+    /// <summary>
+    /// Calculates the number of armies that need to be placed in the initial setup.
+    /// Returns number of players * number of armies to distribute
+    /// This simplifies other aspects, and is ok to do as every player always has the same number of armies to begin with
+    /// </summary>
+    /// <returns>The number of armies to distribute</returns>
+    /// <exception cref="Exception"></exception>
     private int calculateArmiesToAllocate()
     {
         //determine number of armies to allocate to players
@@ -470,37 +562,38 @@ public class GameManager : MonoBehaviour
 
         return armiesToAllocate * numberOfPlayers;
     }
-    int getAvailableToDraft(){
-        return availableToDraft;
-    }
 
-    public bool fortify(Player player, Country origin, Country destination, int count){
-        //Debug.Log("FORTIFY");
+    /// <summary>
+    /// The Fortify Game Mechanic in risk
+    /// </summary>
+    /// <param name="player">unused (For future networking)</param>
+    /// <param name="origin">The origin country to move troops from</param>
+    /// <param name="destination">The destination country to move troops to</param>
+    /// <param name="count">The number of troops to move</param>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
+    public bool Fortify(Player player, Country origin, Country destination, int count){
         // Check if fortify is a valid move in gamestate.
-        if (turnPhaseStateMachine.getTurnPhase() != TurnPhase.Fortify)
+        if (_turnPhaseStateMachine.getTurnPhase() != TurnPhase.Fortify)
         {
             throw new Exception("not in fortify phase");
         }
         
         // Check both countries are owned by the same player
         if(origin.getPlayer() != currentPlayer){
-            // //Debug.Log("orig");
             return false;
         }
         if(destination.getPlayer() != currentPlayer){
-            // //Debug.Log("dest");
             return false;
         }
 
         // Check if destination country is a neighbour to the origin
         if(!origin.isNeighbour(destination)){
-            //Debug.Log("neighbour");
             return false;
         }
 
         // Check origin has count + 1 armies
         if(origin.getArmiesCount() < count){
-            //Debug.Log("count");
             return false;
         }
 
@@ -512,32 +605,36 @@ public class GameManager : MonoBehaviour
         
         return true;
     }
-
+    
+    /// <summary>
+    /// Creates a new player
+    /// </summary>
+    /// <param name="name">The name of the player</param>
+    /// <returns>true if successful</returns>
     public bool createPlayer(string name) {
-        var pl = new Player(name);
+        var pl = new Player(name, _playerColours[playerList.Count]);
         playerList.Enqueue(pl);
         PlayerAdded?.Invoke(pl);
         return true;
     }
+    
+    /// <summary>
+    /// Creates a new Ai player
+    /// </summary>
+    /// <returns>true if successful</returns>
     public bool createAiPlayer() {
-        var pl = new Player("Ai");
+        var pl = new Player("Ai", _playerColours[playerList.Count]);
         pl.setIsAIPlayer(true);
         playerList.Enqueue(pl);
         PlayerAdded?.Invoke(pl);
         return true;
     }
-    void generatePlayers()
-    {
-        //generate player names for number of players
-        Random rnd = new Random();
-        playerNames = playerNames.OrderBy(x => rnd.Next()).Take(numberOfPlayers).ToList();
-        //populate playerList
-        for (int i = 0; i < numberOfPlayers; i++)
-        {
-            string playerName = playerNames[i];
-            playerList.Enqueue(new Player(playerName));
-        }
-    }
+
+    /// <summary>
+    /// Cycles through players to the first player in the game as per the dice rolled
+    /// </summary>
+    /// <param name="playerIndex">The index of the first player in the game</param>
+    /// <returns></returns>
     public bool firstPlayer(int playerIndex){
         for (int i = 0; i < playerIndex+1; i++)
         {
@@ -548,6 +645,9 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Rotates to the next player in the queue
+    /// </summary>
     private void nextPlayerTurn()
     {
         checkHasWonOrLost();
@@ -567,42 +667,68 @@ public class GameManager : MonoBehaviour
         CurrentPlayerChanged?.Invoke(currentPlayer);
     }
     
+    /// <summary>
+    /// Checks if the countryID is owned by the current player
+    /// </summary>
+    /// <param name="countryID">The country ID of country to test</param>
+    /// <returns>true if owned by the current player</returns>
     public bool isOwnCountry(int countryID)
     {
-        return countries[countryID].getPlayer() == currentPlayer;
+        return _countries[countryID].getPlayer() == currentPlayer;
     }
 
+    /// <summary>
+    /// Gets a Country object from a countryID
+    /// </summary>
+    /// <param name="countryID">the countryID of the country to get</param>
+    /// <returns>The Country object</returns>
     public Country getCountry(int countryID)
     {
-        return countries[countryID];
+        return _countries[countryID];
     }
 
+    /// <summary>
+    /// Gets the current turn phase
+    /// </summary>
+    /// <returns>The current TurnPhase</returns>
     public TurnPhase GetTurnPhase()
     {
-        return turnPhaseStateMachine.getTurnPhase();
+        return _turnPhaseStateMachine.getTurnPhase();
     }
+    
+    /// <summary>
+    /// Initialises the countries from the JSON file
+    /// </summary>
     void initCountries(){
         string text = File.ReadAllText(@"./countries.json");
         JObject data = JObject.Parse(text);
         string countryTokens = data["countries"].ToString();
-        countries = JsonConvert.DeserializeObject<Dictionary<int, Country>>(countryTokens);
+        _countries = JsonConvert.DeserializeObject<Dictionary<int, Country>>(countryTokens);
         //Debug.Log(countries.Count);
 
-        foreach (KeyValuePair<int, Country> pair in countries)
+        foreach (KeyValuePair<int, Country> pair in _countries)
         {
             //Debug.Log(pair.Key);
-            pair.Value.initNeighbours(countries);
+            pair.Value.initNeighbours(_countries);
         }
         string continentTokens = data["continents"].ToString();
-        continents = JsonConvert.DeserializeObject<Dictionary<int, Continent>>(continentTokens);
+        _continents = JsonConvert.DeserializeObject<Dictionary<int, Continent>>(continentTokens);
         //Debug.Log(continents.Count);
-        foreach (KeyValuePair<int, Continent> pair in continents)
+        foreach (KeyValuePair<int, Continent> pair in _continents)
         {
-            pair.Value.initCountries(countries);
+            pair.Value.initCountries(_countries);
         }
     }
 
-    public bool battle(Country attacker, int attackRollCount, Country defender, int defendRollCount) {
+    /// <summary>
+    /// The Battle game mechanic in Risk
+    /// </summary>
+    /// <param name="attacker">The country of the attacker</param>
+    /// <param name="attackRollCount">the number of dice to roll for the attacker</param>
+    /// <param name="defender">The country of the defender</param>
+    /// <param name="defendRollCount">the number of dice to roll for the defender</param>
+    /// <returns>true if successful</returns>
+    public bool Battle(Country attacker, int attackRollCount, Country defender, int defendRollCount) {
 
         Random rnd = new Random();
 
@@ -649,11 +775,10 @@ public class GameManager : MonoBehaviour
         ResetEvent?.Invoke(0);
         return true;
     }
-    internal bool fortify(string player, Country origin, Country destination, int count)
-    {
-        throw new NotImplementedException();
-    }
 
+    /// <summary>
+    /// Ai Deploy functionality
+    /// </summary>
     public void doAiDeploy()
     {
         Country deployToCountry;
@@ -674,9 +799,13 @@ public class GameManager : MonoBehaviour
         }
 
         //deploy to the selected country
-        deploy(currentPlayer, deployToCountry.getID());
+        Deploy(currentPlayer, deployToCountry.getID());
     }
 
+    /// <summary>
+    /// Gets a list of countries owned by the current player
+    /// </summary>
+    /// <returns>List of Countries</returns>
     private List<Country> getThisPlayerCountries()
     {
         //find this player's countries
@@ -692,7 +821,12 @@ public class GameManager : MonoBehaviour
 
         return thisPlayerCountries;
     }
-
+    
+    /// <summary>
+    /// Gets the number of enemy neighbours for a given country
+    /// </summary>
+    /// <param name="countries">List of countries to get numbers for</param>
+    /// <returns>A Dictionary for looking up number of enemy neighbours</returns>
     private Dictionary<Country, int> getCountriesAndEnemyNeighbours(List<Country> countries)
     {
         Dictionary<Country, int> countriesAndEnemyNeighbours = new Dictionary<Country, int>();
@@ -706,6 +840,11 @@ public class GameManager : MonoBehaviour
         return countriesAndEnemyNeighbours;
     }
 
+    /// <summary>
+    /// Get the number of enemy neighbours for a given country
+    /// </summary>
+    /// <param name="country">The country to get neighbours for</param>
+    /// <returns>number of enemy countries</returns>
     private int getEnemyNeighboursCount(Country country)
     {
         int numberOfEnemyNeighbours = 0;
@@ -720,7 +859,10 @@ public class GameManager : MonoBehaviour
 
         return numberOfEnemyNeighbours;
     }
-
+    
+    /// <summary>
+    /// Ai Draft functionality
+    /// </summary>
     private void doAIDraftPhase()
     {
         //Debug.Log("AIDRAFT");
@@ -747,11 +889,14 @@ public class GameManager : MonoBehaviour
 
             //choose a country to draft to 
             Country draftToCountry = candidateDraftCountriesAndTroopStrength.OrderBy(kvp => kvp.Value).First().Key;
-            draft(currentPlayer, draftToCountry.getID(), 1);
+            Draft(currentPlayer, draftToCountry.getID(), 1);
         }
         CompletedPhase();
     }
 
+    /// <summary>
+    /// Ai Attack functionality
+    /// </summary>
     private void doAIAttackPhase()
     {
         int maxAttacks = 20;
@@ -767,7 +912,7 @@ public class GameManager : MonoBehaviour
             //decide how many dice to roll in the attack - this AI always attacks with full strength
             int numDiceToRoll = attackingCountry.getArmiesCount() - 1;
             //make the attack
-            battle(attackingCountry, numDiceToRoll, defendingCountry, 1);
+            Battle(attackingCountry, numDiceToRoll, defendingCountry, 1);
 
             //ensure loop conditions are up to date
             attacksSoFar++;
@@ -777,6 +922,11 @@ public class GameManager : MonoBehaviour
         CompletedPhase();
     }
 
+    /// <summary>
+    /// Gets the weakest enemy neighbour of a country
+    /// </summary>
+    /// <param name="attackingCountry">The attacking country</param>
+    /// <returns>the weakest country</returns>
     private Country getWeakestEnemyNeighbour(Country attackingCountry)
     {
         //get a list of enemy neighbours of the attacking country
@@ -839,6 +989,9 @@ public class GameManager : MonoBehaviour
         return validAttackingCountries;
     }
 
+    /// <summary>
+    /// Ai Fortify functionality
+    /// </summary>
     private void doAIFortifyPhase()
     {
         //choose a country to fortify from
@@ -852,7 +1005,6 @@ public class GameManager : MonoBehaviour
 
             //choose a country to fortify to
             Country chosenFortifyToCountry = getThisPlayerMostSurroundedCountry(getThisPlayerCountries());
-
 
             //do fortify if 2 different countries have been chosen as source and dest candidates
             if (chosenFortifyFromCountry != chosenFortifyToCountry)
@@ -913,7 +1065,7 @@ public class GameManager : MonoBehaviour
     }
     private void onPlayerChangeAutoTradeCardsIn(Player player)
     {
-        if (turnPhaseStateMachine.getTurnPhase()!=TurnPhase.Draft)
+        if (_turnPhaseStateMachine.getTurnPhase()!=TurnPhase.Draft)
         {
             //Debug.Log("can't trade in cards, not in draft phase!");
         }
@@ -944,13 +1096,13 @@ public class GameManager : MonoBehaviour
     {
         List<Player> missingPlayers = playerList.ToList();
         
-        foreach (var country in countries.ToList())
+        foreach (var country in _countries.ToList())
         {
             missingPlayers.Remove(country.Value.getPlayer());
         }
 
         // We don't want to check if players have lost if we are in the deploy phase
-        if (turnPhaseStateMachine.getTurnPhase() == TurnPhase.Deploy)
+        if (_turnPhaseStateMachine.getTurnPhase() == TurnPhase.Deploy)
         {
             return;
         }
