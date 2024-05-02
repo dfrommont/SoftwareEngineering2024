@@ -47,9 +47,9 @@ Shader "MapShader"
                 float4 actualColor = _CountryColors[id];
                 float r = float(id / 255);
 
-                actualColor.r = actualColor.r + (0.2 * (max(0.0, _LastVisit[id] - _CurrentTime + 0.75) / 0.75)) + color.g;
-                actualColor.g = actualColor.g + (0.2 * (max(0.0, _LastVisit[id] - _CurrentTime + 0.75) / 0.75)) + color.g;
-                actualColor.b = actualColor.b + (0.2 * (max(0.0, _LastVisit[id] - _CurrentTime + 0.75) / 0.75)) + color.g;
+                actualColor.r = actualColor.r + (0.2 * (max(0.0, _LastVisit[id] - _CurrentTime + 0.75) / 0.75)) + (color.g * 5.0f);
+                actualColor.g = actualColor.g + (0.2 * (max(0.0, _LastVisit[id] - _CurrentTime + 0.75) / 0.75)) + (color.g * 5.0f);
+                actualColor.b = actualColor.b + (0.2 * (max(0.0, _LastVisit[id] - _CurrentTime + 0.75) / 0.75)) + (color.g * 5.0f);
 
                 return half4(actualColor.r, actualColor.g, actualColor.b, 1.0); 
                 // return half4(1.0,0.0,0.0,1.0)
