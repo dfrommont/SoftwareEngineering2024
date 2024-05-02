@@ -10,8 +10,7 @@ public class Country
     public string display_name;
     [SerializeField] private int armiesCount = 0;
 
-    [SerializeField]
-    private List<int> connections = new List<int>();
+    [SerializeField] [JsonProperty] List<int> connections = new List<int>();
     [JsonIgnore]
     private List<Country> neighbours = new List<Country>();
     [JsonIgnore] private List<int> neighbour_ids {
@@ -60,10 +59,10 @@ public class Country
     }
 
     public bool isNeighbour(Country country) {
-        Debug.Log("isNeigbour");
-        Debug.Log(neighbours);
-        Debug.Log(neighbours.Contains(country));
-        return true ;
+        // Debug.Log("isNeigbour");
+        // Debug.Log(neighbours);
+        // Debug.Log(neighbours.Contains(country));
+        return neighbours.Contains(country) ;
     }
 
     public void initNeighbours(Dictionary<int, Country> countries) {
@@ -74,6 +73,8 @@ public class Country
             Debug.Log(c_id);
             neighbours.Add(countries[c_id]);
         }
+        Debug.Log(getName());
+        Debug.Log(connections.Count);
     }
 
     public List<Country> getNeighbours()

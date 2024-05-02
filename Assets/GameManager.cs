@@ -49,6 +49,12 @@ public class GameManager : MonoBehaviour
         turnPhaseStateMachine.EndedTurn += endOfTurnActions;
         CurrentPlayerChanged += onPlayerChangeAutoTradeCardsIn;
         initCountries();
+
+        Debug.Log(countries[1].isNeighbour(countries[36]));
+        Debug.Log(countries[1].isNeighbour(countries[37]));
+        Debug.Log(countries[1].isNeighbour(countries[7]));
+        Debug.Log(countries[1].isNeighbour(countries[3]));
+        
         // Player p1 = new Player("Bob");
         // playerList.Enqueue(p1);
         // PlayerAdded?.Invoke(p1);
