@@ -50,330 +50,296 @@
         "1": {
             "id": 1,
             "display_name": "Afghanistan",
-            "connections": [
-                36,37,7,16,22
-            ]
+            "connections": [36, 37, 7, 16, 22],
+            "x": 180,
+            "y": 55
         },
         "2": {
             "id": 2,
             "display_name": "Alaska",
-            "connections": [
-                20,27,3
-            ]
+            "connections": [20, 27, 3],
+            "x": -410,
+            "y": 210
         },
         "3": {
             "id": 3,
             "display_name": "Alberta",
-            "connections": [
-                2,27,28,41
-            ]
+            "connections": [2, 27, 28, 41],
+            "x": -330,
+            "y": 155
         },
         "4": {
             "id": 4,
             "display_name": "Argentina",
-            "connections": [
-                5,29
-            ]
+            "connections": [5, 29],
+            "x": -215,
+            "y": 55
         },
         "5": {
             "id": 5,
             "display_name": "Brazil",
-            "connections": [
-                25,4,29,38
-            ]
+            "connections": [25, 4, 29, 38],
+            "x": -165,
+            "y": -115
         },
         "6": {
             "id": 6,
             "display_name": "Central America",
-            "connections": [
-                41,11,38
-            ]
+            "connections": [41, 11, 38],
+            "x": -312,
+            "y": 10
         },
         "7": {
             "id": 7,
             "display_name": "China",
-            "connections": [
-                1,37, 33, 23, 32, 16
-            ]
+            "connections": [1, 37, 33, 23, 32, 16],
+            "x": 280,
+            "y": 20
         },
         "8": {
             "id": 8,
             "display_name": "Congo",
-            "connections": [
-            	25, 9, 34
-
-            ]
+            "connections": [25, 9, 34],
+            "x": 40,
+            "y": -160
         },
         "9": {
             "id": 9,
             "display_name": "East Africa",
-            "connections": [
-            	12, 22, 21, 34, 8, 25
-
-            ]
+            "connections": [12, 22, 21, 34, 8, 25],
+            "x": 75,
+            "y": -115
         },
         "10": {
             "id": 10,
             "display_name": "Eastern Australia",
-            "connections": [
-            	39, 24
-
-            ]
+            "connections": [39, 24],
+            "x": 385,
+            "y": -210
         },
         "11": {
             "id": 11,
             "display_name": "Eastern US",
-            "connections": [
-            	6, 41, 28, 30
-
-            ]
+            "connections": [6, 41, 28, 30],
+            "x": -245,
+            "y": 75
         },
         "12": {
             "id": 12,
             "display_name": "Egypt",
-            "connections": [
-            	35, 22, 9, 25
-
-            ]
+            "connections": [35, 22, 9, 25],
+            "x": 40,
+            "y": -60
         },
         "13": {
             "id": 13,
             "display_name": "Great Britain",
-            "connections": [
-            	15, 31, 26, 40
-
-            ]
+            "connections": [15, 31, 26, 40],
+            "x": -70,
+            "y": 90
         },
         "14": {
             "id": 14,
             "display_name": "Greenland",
-            "connections": [
-            	15, 30, 28, 27
-
-            ]
+            "connections": [15, 30, 28, 27],
+            "x": -140,
+            "y": 240
         },
         "15": {
             "id": 15,
             "display_name": "Iceland",
-            "connections": [
-            	14, 13, 31
-
-            ]
+            "connections": [14, 13, 31],
+            "x": -62,
+            "y": 175
         },
         "16": {
             "id": 16,
             "display_name": "India",
-            "connections": [
-            	32, 22, 1, 7
-
-            ]
+            "connections": [32, 22, 1, 7],
+            "x": 215,
+            "y": -30
         },
         "17": {
             "id": 17,
             "display_name": "Indonesia",
-            "connections": [
-            	24, 39, 32
-
-            ]
+            "connections": [24, 39, 32],
+            "x": 309,
+            "y": -150
         },
         "18": {
             "id": 18,
             "display_name": "Irkutsk",
-            "connections": [
-            	42, 20, 23, 33
-
-            ]
+            "connections": [42, 20, 23, 33],
+            "x": 290,
+            "y": 140
         },
         "19": {
             "id": 19,
             "display_name": "Japan",
-            "connections": [
-            	20, 23
-
-            ]
+            "connections": [20, 23],
+            "x": 405,
+            "y": 80
         },
         "20": {
             "id": 20,
             "display_name": "Kamchatka",
-            "connections": [
-            	19, 23, 18, 42, 2
-
-            ]
+            "connections": [19, 23, 18, 42, 2],
+            "x": 385,
+            "y": 225
         },
         "21": {
             "id": 21,
             "display_name": "Madagascar",
-            "connections": [
-
-            ]
+            "connections": [],
+            "x": 125,
+            "y": -245
         },
         "22": {
             "id": 22,
             "display_name": "Middle East",
-            "connections": [
-            	9, 34
-
-            ]
+            "connections": [9, 34],
+            "x": 110,
+            "y": -35
         },
         "23": {
             "id": 23,
             "display_name": "Mongolia",
-            "connections": [
-            	19, 7, 33, 18, 20
-
-            ]
+            "connections": [19, 7, 33, 18, 20],
+            "x": 310,
+            "y": 80
         },
         "24": {
             "id": 24,
             "display_name": "New Guinea",
-            "connections": [
-            	10, 39, 17
-
-            ]
+            "connections": [10, 39, 17],
+            "x": 388,
+            "y": -135
         },
         "25": {
             "id": 25,
             "display_name": "North Africa",
-            "connections": [
-            	5, 40, 35, 12, 9, 8
-
-            ]
+            "connections": [5, 40, 35, 12, 9, 8],
+            "x": -35,
+            "y": -85
         },
         "26": {
             "id": 26,
             "display_name": "Northern Europe",
-            "connections": [
-            	13, 31, 36, 35, 40
-
-            ]
+            "connections": [13, 31, 36, 35, 40],
+            "x": 5,
+            "y": 80
         },
         "27": {
             "id": 27,
             "display_name": "Northwest Territor",
-            "connections": [
-            	2, 14, 28, 3
-
-            ]
+            "connections": [2, 14, 28, 3],
+            "x": -310,
+            "y": 210
         },
         "28": {
             "id": 28,
             "display_name": "Ontario",
-            "connections": [
-            	30, 11, 41, 3, 27, 14
-
-            ]
+            "connections": [30, 11, 41, 3, 27, 14],
+            "x": -365,
+            "y": 145
         },
         "29": {
             "id": 29,
             "display_name": "Peru",
-            "connections": [
-            	4, 5, 38
-
-            ]
+            "connections": [4, 5, 38],
+            "x": -225,
+            "y": -130
         },
         "30": {
             "id": 30,
             "display_name": "Quebec",
-            "connections": [
-            	14, 11, 28
-
-            ]
+            "connections": [14, 11, 28],
+            "x": -195,
+            "y": 145
         },
         "31": {
             "id": 31,
             "display_name": "Scandinavia",
-            "connections": [
-            	15, 13, 26, 36
-
-            ]
+            "connections": [15, 13, 26, 36],
+            "x": 0,
+            "y": 168
         },
         "32": {
             "id": 32,
             "display_name": "Siam",
-            "connections": [
-            	17, 16, 7
-
-            ]
+            "connections": [17, 16, 7],
+            "x": 290,
+            "y": -50
         },
         "33": {
             "id": 33,
             "display_name": "Siberia",
-            "connections": [
-            	37, 42, 18, 23, 7
-
-            ]
+            "connections": [37, 42, 18, 23, 7],
+            "x": 240,
+            "y": 200
         },
         "34": {
             "id": 34,
             "display_name": "South Africa",
-            "connections": [
-            	8, 9, 21
-
-            ]
+            "connections": [8, 9, 21],
+            "x": 50,
+            "y": -240
         },
         "35": {
             "id": 35,
             "display_name": "Southern Europe",
-            "connections": [
-            	12, 25, 40, 26, 36, 22
-
-            ]
+            "connections": [12, 25, 40, 26, 36, 22],
+            "x": 10,
+            "y": 40
         },
         "37": {
             "id": 37,
             "display_name": "Ukraine",
-            "connections": [
-            	26, 31, 37, 1, 22, 35
-
-            ]
+            "connections": [26, 31, 37, 1, 22, 35],
+            "x": 100,
+            "y": 140
         },
         "36": {
             "id": 36,
             "display_name": "Ural",
-            "connections": [
-            	36, 1, 7, 33
-
-            ]
+            "connections": [36, 1, 7, 33],
+            "x": 180,
+            "y": 160
         },
         "38": {
             "id": 38,
             "display_name": "Venezuela",
-            "connections": [
-            	5, 6, 29
-
-            ]
+            "connections": [5, 6, 29],
+            "x": -240,
+            "y": -50
         },
         "39": {
             "id": 39,
             "display_name": "Western Australia",
-            "connections": [
-            	17, 24, 10
-
-            ]
+            "connections": [17, 24, 10],
+            "x": 340,
+            "y": -240
         },
         "40": {
             "id": 40,
             "display_name": "Western Europe",
-            "connections": [
-            	13, 26, 35, 25
-
-            ]
+            "connections": [13, 26, 35, 25],
+            "x": -67,
+            "y": 5
         },
         "41": {
             "id": 41,
             "display_name": "Western US",
-            "connections": [
-            	3, 28, 11, 6
-
-            ]
+            "connections": [3, 28, 11, 6],
+            "x": -325,
+            "y": 90
         },
         "42": {
             "id": 42,
             "display_name": "Yakutsk",
-            "connections": [
-            	33, 18, 20
-
-            ]
-        }
+            "connections": [33, 18, 20],
+            "x": 310,
+            "y": 230
+        }      
     }
 }

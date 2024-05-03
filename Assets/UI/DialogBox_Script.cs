@@ -31,6 +31,7 @@ public class DialogBox_Script : MonoBehaviour
 
     public void longMessage(string message)
     {
+        toggle();
         text.SetText(message);
     }
 
@@ -41,8 +42,10 @@ public class DialogBox_Script : MonoBehaviour
 
     public void shortMessage(string message, int time)
     {
+        toggle();
         text.SetText(message);
         System.Threading.Thread.Sleep(time * 1000);
         clear();
+        toggle();
     }
 }

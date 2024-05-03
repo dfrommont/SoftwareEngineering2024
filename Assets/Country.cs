@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Newtonsoft.Json;
+using UnityEngine.UIElements;
 
 [System.Serializable]
 public class Country
@@ -23,6 +24,8 @@ public class Country
         }
     }
     [JsonIgnore] private Player player;
+    public int x;
+    public int y;
 
     public int getID() {
         return id;

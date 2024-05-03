@@ -13,6 +13,7 @@ public class GameInterface: MonoBehaviour
     public event Action<int> ResetEvent;
     public event Action<int> DraftCountChanged;
     public event Action CountryChanged;
+    public event Action CountriesInitialised;
     void Start(){
         gameManager.TurnPhaseChanged += turnPhaseChanged;
         gameManager.CurrentPlayerChanged += currentPlayerChanged;
@@ -20,6 +21,7 @@ public class GameInterface: MonoBehaviour
         gameManager.ResetEvent += resetEvent;
         gameManager.DraftCountChanged += draftCountChanged;
         gameManager.CountryChanged += countryChanged;
+        gameManager.CountriesInitialised += countriesInitialised;
     }
 
     public bool nextPhase(){
@@ -188,6 +190,11 @@ public class GameInterface: MonoBehaviour
             CountryChanged?.Invoke();
             Debug.Log("CCGI");
         }
+
+    public void countriesInitialised()
+    {
+        CountriesInitialised?.Invoke();
+    }
 
     public void resetEvent(int a){
         Debug.Log(a);

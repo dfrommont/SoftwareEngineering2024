@@ -1,10 +1,14 @@
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
+using System.IO;
 using TMPro;
 using UnityEngine;
 
 public class TroopNumbers_Script : MonoBehaviour
 {
     public UI_Manager manager;
+    public GameInterface gameInterface;
     public TMP_Text afghanastan;
     public TMP_Text alaska;
     public TMP_Text alberta;
@@ -47,12 +51,12 @@ public class TroopNumbers_Script : MonoBehaviour
     public TMP_Text westernEurope;
     public TMP_Text westernUS;
     public TMP_Text yakutsk;
-    private Dictionary<string, TMP_Text> country_dict;
+    private Dictionary<string, TMP_Text> countries;
 
     // Start is called before the first frame update
     void Start()
     {
-        country_dict = new Dictionary<string, TMP_Text>() {
+        countries = new Dictionary<string, TMP_Text>() {
             {"Afghanistan", afghanastan},
             {"Alaska", alaska},
             {"Alberta", alberta},
@@ -96,10 +100,36 @@ public class TroopNumbers_Script : MonoBehaviour
             {"Western US", westernUS},
             {"Yakutsk", yakutsk},
         };
+
     }
 
-    public void changeNumber(string name, int number)
+    public void load()
     {
-        country_dict[name].SetText(""+number);
+        foreach (KeyValuePair<string, TMP_Text> pair in countries)
+        {
+            foreach (Country c in gameInterface.getCountries())
+            {
+                if (c.display_name == name)
+                {
+                    countries[name].SetText("" + c.getArmiesCount());
+                    countries[name].transform.position = new Vector3(c.x, c.y, 0);
+                    break;
+                }
+            }
+        }
     }
+
+    public void changeNumber(string name)
+    {
+        foreach (Country c in gameInterface.getCountries())
+        {
+            if (c.display_name == name)
+            {
+                countries[name].SetText("" + c.getArmiesCount());
+                break;
+            }
+        }
+    }
+
+
 }

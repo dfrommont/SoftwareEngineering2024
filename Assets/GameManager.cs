@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     public event Action<int> ResetEvent;
     public event Action<int> DraftCountChanged;
     public event Action CountryChanged;
+    public event Action CountriesInitialised;
 
     private List<string> playerNames = new()
         { "Harold", "Horace", "Henry", "Hermine", "Hetty", "Harriet" };
@@ -54,7 +55,7 @@ public class GameManager : MonoBehaviour
         Debug.Log(countries[1].isNeighbour(countries[37]));
         Debug.Log(countries[1].isNeighbour(countries[7]));
         Debug.Log(countries[1].isNeighbour(countries[3]));
-        
+
         // Player p1 = new Player("Bob");
         // playerList.Enqueue(p1);
         // PlayerAdded?.Invoke(p1);
@@ -64,6 +65,8 @@ public class GameManager : MonoBehaviour
         // Player p3 = new Player("Stuart");
         // playerList.Enqueue(p3);
         // PlayerAdded?.Invoke(p3);
+
+        countriesInitialised();
     }
 
     public bool startGame()
@@ -145,6 +148,7 @@ public class GameManager : MonoBehaviour
             }
             CountryChanged?.Invoke();
             unoccupiedCountries.Clear();
+            CountriesInitialised?.Invoke();
         }
         return true;
     }
@@ -302,7 +306,7 @@ public class GameManager : MonoBehaviour
     }
     public List<Country> getCountries(){
         List<Country> return_countries = new List<Country>();
-        foreach(KeyValuePair<int, Country> country in countries)
+        foreach (KeyValuePair<int, Country> country in countries)
         {
             return_countries.Add(country.Value);
         }
@@ -323,6 +327,12 @@ public class GameManager : MonoBehaviour
     public void countryChanged()
     {
         CountryChanged?.Invoke();
+        //Debug.Log("GM");
+    }
+
+    public void countriesInitialised()
+    {
+        CountriesInitialised?.Invoke();
         //Debug.Log("GM");
     }
 
