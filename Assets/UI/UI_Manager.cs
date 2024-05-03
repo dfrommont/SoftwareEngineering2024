@@ -10,6 +10,26 @@ public class UI_Manager : MonoBehaviour
 
     /// <summary>
     /// Class <c>UI_Manager</c> manages incoming communications from the UI components and GameInterface.
+    /// <value>gameInterface</value> of type GameInterface
+    /// <value>background</value> of type background_Script
+    /// <value>clickerBackground</value> of type Clicker
+    /// <value>menu</value> of type Menu_Script
+    /// <value>mainMenu</value> of type MainMenu_Script
+    /// <value>troopMovement</value> of type TroopMovement_Script
+    /// <value>dialogBox</value> of type DialogBox_Script
+    /// <value>cardMenu</value> of type CardMenu_Script
+    /// <value>overlay</value> of type Overlay_Script
+    /// <value>nextStage</value> of type Overlay_Script
+    /// <value>cardHolder</value> of type CardHolder_Script
+    /// <value>map</value> of type MapScript
+    /// <value>draftScreen</value> of TypeDraftScreen
+    /// <value>attackScreen</value> of type AttackScreen
+    /// <value>fortifyScreen</value> of type FortifyPhase
+    /// <value>troopNumbers</value> of type TroopNumbers_Script
+    /// <value>_clickingActive</value> of type bool, default value is false
+    /// <value>turnPhase</value> of type turnPhase, default value is Deploy
+    /// <value>originCountry</value> of type int
+    /// <value>destinationCountry</value> of type int
     /// </summary>
 
     public GameInterface gameInterface;
